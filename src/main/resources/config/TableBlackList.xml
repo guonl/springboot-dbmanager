@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tables>
+
+    <!--黑名单表列表-->
+    <table>connect_history</table>
+    <table>connect_info</table>
+
+    <!--黑名单字段列表-->
+    <tc name="users">
+        <c>status</c>
+        <c>created_at</c>
+        <c>updated_at</c>
+    </tc>
+    <tc name="logs_sql_record">
+        <c>created_at</c>
+        <c>updated_at</c>
+        <c>is_del</c>
+    </tc>
+
+</tables>
