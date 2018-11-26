@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:fragment="header">
+
+<title>会员管理系统</title>
+
+<!--STYLESHEET-->
+<!--Bootstrap Stylesheet [ REQUIRED ]-->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	th:href="@{/plugins/bootstrap-datepicker/bootstrap-datepicker.css}" />
+<!--Nifty Stylesheet [ REQUIRED ]-->
+<link rel="stylesheet" th:href="@{/css/nifty.min.css}" />
+<!--Font Awesome [ OPTIONAL ]-->
+<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" />
+<!--Page Load Progress Bar [ OPTIONAL ]-->
+<link rel="stylesheet" th:href="@{/css/pace.min.css}" />
+<link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
+<link rel="shortcut icon" th:href="@{/img/favicon.ico}"
+	type="image/x-icon" />
+
+
+<!--SCRIPT-->
+<!--=================================================-->
+<!--Page Load Progress Bar [ OPTIONAL ]-->
+<script th:src="@{/js/pace.min.js}"></script>
+<!--jQuery [ REQUIRED ]-->
+<script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+<!--BootstrapJS [ RECOMMENDED ]-->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script
+	th:src="@{/plugins/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+<script
+	th:src="@{/plugins/bootstrap-validator/bootstrapValidator.min.js}"></script>
+
+<!--Nifty Admin [ RECOMMENDED ]-->
+<script th:src="@{/js/nifty.min.js}"></script>
+<script th:src="@{/js/util.js}"></script>
+<script th:src="@{/js/urms-path.js}"></script>
+<script th:src="@{/js/jquery-form.js}"></script>
+
+<link rel="stylesheet"
+	th:href="@{/css/loading.css(version=${session.jsVersion})}" />
+<link rel="stylesheet"
+	th:href="@{/css/style.css(version=${session.jsVersion})}" />
+</head>
+</html>

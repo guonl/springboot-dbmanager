@@ -1,0 +1,70 @@
+.alert-content {
+    position: fixed;
+    box-sizing: border-box;
+    border-radius: 4px;
+    z-index: 9999;
+    -webkit-transition: .4s;
+    -moz-transition: .4s;
+    transition: .4s;
+    display: none;
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: rgba(221, 220, 226, 0.8);
+    filter: alpha(opacity=50); /* IE的透明度 */
+    /*opacity: 0.5;*/  /* 透明度 */
+    /***********************透明技术 ，兼容所有浏览器**************************/
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#000000', endColorstr='#ccff00');
+    top: 25%;
+    left: 50%;
+    margin-left: -340px;
+    padding: 20px;
+}
+
+.alert-mask {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0%;
+    top: 0%;
+    z-index: 9998;
+}
+
+.alert-show {
+    display: block;
+}
+
+.close_btn{
+    font-family:  "Microsoft Yahei", "微软雅黑";
+    color: #FFF;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 26px;
+    text-align: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    background-color: #000;
+}
+
+.tc_title{
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    /* color: red; */
+}
+
+.mobile{
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    text-decoration: underline;
+    /* color: red; */
+}
+

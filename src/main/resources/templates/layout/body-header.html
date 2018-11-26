@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:fragment="body-header">
+	<header id="navbar">
+		<div id="navbar-container" class="boxed">
+			<!--================================-->
+			<div class="navbar-header">
+				<a href="/" class="navbar-brand"> <img src="/img/logo.png"
+					alt="Nifty Logo" class="brand-icon" /> <span
+					class="brand-title brand-text">会员管理系统</span>
+				</a>
+			</div>
+			<div class="navbar-content clearfix">
+				<ul class="nav navbar-top-links pull-left">
+					<li class="nav-headerText"><h4
+							th:text="${nav_menu_name}"></h4></li>
+				</ul>
+				<ul class="nav navbar-top-links pull-right">
+					<li id="dropdown-user" class="dropdown"><a href="#"
+						style="cursor: default;" data-toggle="dropdown"
+						class="dropdown-toggle text-right"> <span class="pull-right"><img
+								class="img-circle img-user media-object" src="/img/av1.png"
+								alt="Profile Picture" /></span>
+							<div class="username hidden-xs">
+								您好，<span th:text="${session.uc_username}"></span>
+							</div>
+					</a></li>
+					<li>
+						<div class=" text-right"
+							style="line-height: 40px; padding: 0 5px 0 15px">
+							<a href="/logout" class="btn-primary btn"> <i
+								class="fa fa-sign-out fa-fw"></i>退出系统
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</header>
+</div>
+</html>

@@ -1,12 +1,11 @@
 package com.guonl.controller;
 
-import com.guonl.xml.bean.Columns;
-import com.guonl.xml.bean.BlackTables;
 import com.guonl.po.Users;
 import com.guonl.service.TestService;
-import com.guonl.util.DataSourceUtil;
 import com.guonl.vo.FrontResult;
 import com.guonl.xml.TableBlackBuilder;
+import com.guonl.xml.bean.BlackTables;
+import com.guonl.xml.bean.Columns;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -32,8 +31,6 @@ public class TestController {
     @Autowired
     private TestService testService;
     @Autowired
-    private DataSourceUtil dataSourceUtil;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -55,7 +52,7 @@ public class TestController {
         //执行SQL,输出查到的数据
         String tableName = name;
         //查询黑名单
-        BlackTables blackTables = TableBlackBuilder.getBlackTables();
+        BlackTables blackTables = TableBlackBuilder.getAll();
         List<String> tableNameList = blackTables.getTableName();//表的限制
         List<Columns> columnsList = blackTables.getColumnsList();//字段的限制
         //判断这张表里面是否有需要排除的字段

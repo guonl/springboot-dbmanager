@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:include="layout/head :: header" />
+    <!--<body>-->
+    <!--<div layout:fragment="content"></div>-->
+<!--</body>-->
+<!--</html>-->
+
+    <body>
+	<div th:fragment="body">
+		<div id="container" class="effect mainnav-lg">
+
+			<div th:include="layout/body-header :: body-header"></div>
+
+			<div class="boxed">
+
+				<div id="content-container">
+					<div id="page-content" style="margin-top: 1em;">
+						<div layout:fragment="content">
+							<div class="login-welcome">
+								<span>Hi：</span><span th:text="${session.ucEmployeeName}"></span>
+								<h2>欢迎登录会员管理系统！</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div th:include="layout/body-menu :: body-menu"></div>
+
+				<!--<div th:include="layout/body-footer :: body-footer"></div>-->
+
+			</div>
+
+			<button id="scroll-top" class="btn">
+				<i class="fa fa-chevron-up"></i>
+			</button>
+
+		</div>
+	</div>
+
+	<script>
+		/*
+		 *由二级页面 点击进去的 其他页面， 没有导航栏 问题解决
+		 *
+		 */
+		var pageNav = {
+			"/member-level/level-save" : "/member-level/level-show", // 新增等级
+			"/member-level/level-modify" : "/member-level/level-show", // 修改等级
+			"/member-growth/rule-save" : "/member-growth/rule-show"//新建等级
+		};
+
+		//page title auto fill
+		var title = $('a[href|="' + window.location.pathname + '"]').children(
+				'span').text();
+		$('#page-title').text(title);
+		//end page title auto fill
+
+		//menu auto expand
+		var path = window.location.pathname;
+		if (typeof (activeMenu) != 'undefined') {
+			path = activeMenu;
+		}
+
+		if (undefined != pageNav[path]) {
+			path = pageNav[path];
+		}
+
+		var active_menu = $('a[href|="' + path + '"]', $('#mainnav-menu'))
+				.parent();
+		if (active_menu.parent().hasClass('isSubMenu')) {
+			active_menu.parent().addClass('in');
+			active_menu.parent().parent().addClass('active-sub active');
+		}
+		if (active_menu.parent().hasClass('isThirdMenu')) {
+			active_menu.parent().addClass('in');
+			active_menu.parent().parent().addClass('active-sub active');
+			active_menu.parent().parent().parent()
+					.addClass('active-sub active');
+			active_menu.parent().parent().parent().parent().addClass(
+					'active-sub active');
+		}
+		active_menu.addClass('active-link');
+		//end menu auto expand
+	</script>
+</body>
+</html>
+

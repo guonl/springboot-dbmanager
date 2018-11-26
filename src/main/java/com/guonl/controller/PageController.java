@@ -2,6 +2,7 @@ package com.guonl.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by guonl
@@ -9,7 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Description:
  */
 @Controller
-@RequestMapping("/page")
+@RequestMapping("/dbm")
 public class PageController {
+
+
+    @RequestMapping(value = "/",method = RequestMethod.GET)
+    public String index(){
+        return "index";
+    }
+
+
+    @RequestMapping(value = "/admin",method = RequestMethod.GET)
+    public String admin(){
+        return "dbm/admin";
+    }
 
 }
