@@ -14,9 +14,9 @@ import java.util.Map;
  * Date 2018/11/29 10:59 AM
  * Description:
  */
-public class MySqlFactory {
+public class SqlFactory {
 
-    private static Logger logger = LoggerFactory.getLogger(MySqlFactory.class);
+    private static Logger logger = LoggerFactory.getLogger(SqlFactory.class);
 
     /**
      * 需要操作的表名
@@ -55,7 +55,7 @@ public class MySqlFactory {
      * @param whereMap  前端传过来的where集
      * @param type      sql类型
      */
-    public MySqlFactory(String tableName, Map<String, Object> setMap, Map<String, Object> whereMap, SqlTypeEnum type) {
+    public SqlFactory(String tableName, Map<String, Object> setMap, Map<String, Object> whereMap, SqlTypeEnum type) {
 
         try {
             this.tableName = tableName;
@@ -132,21 +132,25 @@ public class MySqlFactory {
         Field[] fields = setObj.getClass().getDeclaredFields();
         try {
             //封装set
+            buffer.append("set ");
             for (Field field : fields) {
                 field.setAccessible(true);
                 Object value = field.get(setObj);
                 if (null != value) {
                     String name = ManagerUtil.po2Db(field.getName());//得到字段名
-                    buffer.append("set " + name + "=? ");
+                    buffer.append(name + "=?,");
                     objParam.add(value);
                 }
+            }
+            if(buffer.toString().endsWith(",")){
+                buffer.deleteCharAt(buffer.length()-1);
             }
             //封装where
             if (whereObj == null) {// 字段属性都是null
                 logger.info("update的where条件为null");
                 buffer.append("where 1=1");
             } else {
-                buffer.append("where ");
+                buffer.append(" where ");
                 Field[] declaredFields = whereObj.getClass().getDeclaredFields();
                 for (Field field : declaredFields) {
                     field.setAccessible(true);

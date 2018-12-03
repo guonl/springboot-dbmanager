@@ -2,6 +2,8 @@ package com.guonl.service;
 
 import com.google.common.collect.Lists;
 import com.guonl.exception.MySqlException;
+import com.guonl.factory.my.SqlFactory;
+import com.guonl.util.SqlTypeEnum;
 import com.guonl.vo.FrontResult;
 import com.guonl.vo.QueryVO;
 import com.guonl.xml.TableBlackBuilder;
@@ -19,6 +21,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -165,5 +168,15 @@ public class TableService {
 
 
 
+    }
+
+    public int testUpdate(String tableName, Map<String, Object> setMap, Map<String, Object> whereMap) {
+        SqlFactory sqlFactory = new SqlFactory(tableName,setMap,whereMap, SqlTypeEnum.UPDATE);
+        String sql = sqlFactory.getSql();
+        Object[] sqlParam = sqlFactory.getSqlParam();
+        logger.info("生成的update语句为：" + sql);
+        logger.info("参数为：" + Arrays.toString(sqlParam));
+        int update = jdbcTemplate.update(sql, sqlParam);
+        return update;
     }
 }

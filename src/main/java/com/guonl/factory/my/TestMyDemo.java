@@ -1,12 +1,10 @@
 package com.guonl.factory.my;
 
 import com.guonl.po.Users;
-import com.guonl.util.ManagerUtil;
 import com.guonl.util.SqlTypeEnum;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +50,7 @@ public class TestMyDemo {
         setMap.put("birthday","2018-08-08");
         whereMap.put("id","2");
         whereMap.put("mobile","18221825926");
-        MySqlFactory sqlFactory = new MySqlFactory(tableName,setMap,whereMap, SqlTypeEnum.UPDATE);
+        SqlFactory sqlFactory = new SqlFactory(tableName,setMap,whereMap, SqlTypeEnum.UPDATE);
 
         System.out.println("sql语句：" + sqlFactory.getSql());
         System.out.println("sql参数：" + Arrays.toString(sqlFactory.getSqlParam()));

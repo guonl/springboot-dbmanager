@@ -16,7 +16,7 @@ import java.util.Set;
  * Date 2018/11/27 3:50 PM
  * Description:
  */
-public class SqlFactory {
+public class SqlFactoryDemo {
     /**
      * @param args
      *            反射工具类 自动生成sql 语句 和参数赋值 实体类中含有id字样的只能唯一
@@ -42,7 +42,7 @@ public class SqlFactory {
     private Map<String, Object> paramMap = new HashMap<String, Object>();
 
 
-    public SqlFactory(Object obj){
+    public SqlFactoryDemo(Object obj){
         /**
          * 构造方法
          * 自动加载load
@@ -206,14 +206,14 @@ public class SqlFactory {
         te.setId(123);
         te.setBir(new Date());
         System.out.println("********添删改********");
-        SqlFactory sf = new SqlFactory(te);
+        SqlFactoryDemo sf = new SqlFactoryDemo(te);
         String sql = sf.createUpdateSql("update");
         Object[] oo = sf.getSqlParams();
         System.out.println(sql);
         System.out.println(Arrays.toString(oo));
 
         System.out.println("********查询********");
-        SqlFactory sf2 = new SqlFactory(te);//1
+        SqlFactoryDemo sf2 = new SqlFactoryDemo(te);//1
         Map<String, Object> ma = new HashMap<String, Object>();
         ma.put("userName", "张三");
         ma.put("userPass", new Time(new Date().getTime()));

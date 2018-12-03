@@ -1,10 +1,6 @@
 package com.guonl.factory.test01;
 
-import java.sql.Time;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by guonl
@@ -26,7 +22,7 @@ public class DemoTest01 {
         te.setId(123);
 //        te.setBir(new Date());
         System.out.println("********添删改********");
-        SqlFactory sf = new SqlFactory(te);
+        SqlFactoryDemo sf = new SqlFactoryDemo(te);
         String sql = sf.createUpdateSql("update");
         Object[] oo = sf.getSqlParams();
         System.out.println(sql);
