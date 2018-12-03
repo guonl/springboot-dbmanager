@@ -35,7 +35,6 @@ public class TableService {
 
     private static Logger logger = LoggerFactory.getLogger(TableService.class);
 
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -142,7 +141,8 @@ public class TableService {
         if (sql.startsWith("select")) {
             matcher = Pattern.compile("select\\s.+from\\s(.+)where\\s(.*)").matcher(sql);
         }
-        //INSERT INTO 表名称 VALUES (值1, 值2,....)
+        //INSERT INTO 表名称 VALUES (值1, 值2,...
+        // .)
         //INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
         if (sql.startsWith("insert")) {
             matcher = Pattern.compile("insert\\sinto\\s(.+)\\(.*\\)\\s.*").matcher(sql);
@@ -156,5 +156,14 @@ public class TableService {
             matcher = Pattern.compile("delete\\sfrom\\s(.+)where\\s(.*)").matcher(sql);
         }
         return matcher;
+    }
+
+    /**
+     * 测试拼接update的方法
+     */
+    public void testUpdate() {
+
+
+
     }
 }

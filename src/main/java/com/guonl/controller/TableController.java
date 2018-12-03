@@ -115,6 +115,16 @@ public class TableController {
         return "";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/test/update",method = RequestMethod.GET)
+    public FrontResult testUpdate(){
+        tableService.testUpdate();
+        return FrontResult.success("操作成功");
+
+    }
+
+
+
     @Test
     public void test() {
         QueryVO queryVO = new QueryVO();

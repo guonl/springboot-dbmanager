@@ -9,7 +9,7 @@ import java.util.HashMap;
  * Date 2018/11/28 2:13 PM
  * Description:
  */
-public class DemoTest {
+public class DemoTest02 {
 
     public static void main(String[] args) {
 
@@ -17,13 +17,13 @@ public class DemoTest {
         HashMap<String, String> fixedParams=new HashMap<String,String>();
         fixedParams.put("createDate", "NOW()");
         fixedParams.put("modifyDate", "NOW()");
-        System.out.println(CreateSqlTools.getDeleteSql(netProxyCfg));
+        /*System.out.println(CreateSqlTools.getDeleteSql(netProxyCfg));
         System.out.println(CreateSqlTools.getDeleteSql(netProxyCfg, true));
         System.out.println(CreateSqlTools.getInsertSql(netProxyCfg));
         System.out.println(CreateSqlTools.getInsertSql(netProxyCfg, fixedParams));
         System.out.println(CreateSqlTools.getSelectAllSql(netProxyCfg));
         System.out.println(CreateSqlTools.getUpdateSql(netProxyCfg));
-        System.out.println(CreateSqlTools.getUpdateSql(netProxyCfg, true));
+        System.out.println(CreateSqlTools.getUpdateSql(netProxyCfg, true));*/
         System.out.println(CreateSqlTools.getUpdateSql(netProxyCfg, true, fixedParams));
     }
 

@@ -21,9 +21,7 @@ public class DateUtils {
     /**
      * 获取当前日期
      *
-     *
      * @return
-     *
      */
     public static String getCurrentDate() {
         String datestr = null;
@@ -35,9 +33,7 @@ public class DateUtils {
     /**
      * 获取当前日期时间
      *
-     *
      * @return
-     *
      */
     public static String getCurrentDateTime() {
         String datestr = null;
@@ -49,9 +45,7 @@ public class DateUtils {
     /**
      * 获取当前日期时间
      *
-     *
      * @return
-     *
      */
     public static String getCurrentDateTime(String Dateformat) {
         String datestr = null;
@@ -66,17 +60,16 @@ public class DateUtils {
         datestr = df.format(date);
         return datestr;
     }
+
     /**
      * 将字符串日期转换为日期格式
      *
-     *
      * @param datestr
      * @return
-     *
      */
     public static Date stringToDate(String datestr) {
 
-        if(datestr ==null ||datestr.equals("")){
+        if (datestr == null || datestr.equals("")) {
             return null;
         }
         Date date = new Date();
@@ -84,7 +77,7 @@ public class DateUtils {
         try {
             date = df.parse(datestr);
         } catch (ParseException e) {
-            date=DateUtils.stringToDate(datestr,"yyyyMMdd");
+            date = DateUtils.stringToDate(datestr, DATE_TIME_FORMAT);
         }
         return date;
     }
@@ -95,7 +88,6 @@ public class DateUtils {
      *
      * @param datestr
      * @return
-     *
      */
     public static Date stringToDate(String datestr, String dateformat) {
         Date date = new Date();
@@ -109,15 +101,11 @@ public class DateUtils {
     }
 
 
-
-
     /**
      * 将日期格式日期转换为字符串格式
      *
-     *
      * @param date
      * @return
-     *
      */
     public static String dateToString(Date date) {
         String datestr = null;
@@ -143,11 +131,8 @@ public class DateUtils {
     /**
      * 获取日期的DAY值
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return
-     *
      */
     public static int getDayOfDate(Date date) {
         int d = 0;
@@ -160,11 +145,8 @@ public class DateUtils {
     /**
      * 获取日期的MONTH值
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return
-     *
      */
     public static int getMonthOfDate(Date date) {
         int m = 0;
@@ -177,11 +159,8 @@ public class DateUtils {
     /**
      * 获取日期的YEAR值
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return
-     *
      */
     public static int getYearOfDate(Date date) {
         int y = 0;
@@ -194,11 +173,8 @@ public class DateUtils {
     /**
      * 获取星期几
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return
-     *
      */
     public static int getWeekOfDate(Date date) {
         int wd = 0;
@@ -211,11 +187,8 @@ public class DateUtils {
     /**
      * 获取输入日期的当月第一天
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return
-     *
      */
     public static Date getFirstDayOfMonth(Date date) {
         Calendar cd = Calendar.getInstance();
@@ -236,11 +209,8 @@ public class DateUtils {
     /**
      * 判断是否是闰年
      *
-     *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @return 是true 否false
-     *
      */
     public static boolean isLeapYEAR(Date date) {
 
@@ -258,30 +228,23 @@ public class DateUtils {
     /**
      * 根据整型数表示的年月日，生成日期类型格式
      *
-     * @param year
-     *      年
-     * @param month
-     *      月
-     * @param day
-     *      日
+     * @param year  年
+     * @param month 月
+     * @param day   日
      * @return
-     *
      */
     public static Date getDateByYMD(int year, int month, int day) {
         Calendar cd = Calendar.getInstance();
-        cd.set(year, month-1, day);
+        cd.set(year, month - 1, day);
         return cd.getTime();
     }
 
     /**
      * 获取年周期对应日
      *
-     * @param date
-     *      输入日期
-     * @param iyear
-     *      年数  負數表示之前
+     * @param date  输入日期
+     * @param iyear 年数  負數表示之前
      * @return
-     *
      */
     public static Date getYearCycleOfDate(Date date, int iyear) {
         Calendar cd = Calendar.getInstance();
@@ -295,11 +258,9 @@ public class DateUtils {
     /**
      * 获取月周期对应日
      *
-     * @param date
-     *      输入日期
+     * @param date 输入日期
      * @param i
      * @return
-     *
      */
     public static Date getMonthCycleOfDate(Date date, int i) {
         Calendar cd = Calendar.getInstance();
@@ -316,16 +277,15 @@ public class DateUtils {
      * @param fromDate
      * @param toDate
      * @return 年数
-     *
      */
     public static int getYearByMinusDate(Date fromDate, Date toDate) {
-        Calendar df=Calendar.getInstance();
+        Calendar df = Calendar.getInstance();
         df.setTime(fromDate);
 
-        Calendar dt=Calendar.getInstance();
+        Calendar dt = Calendar.getInstance();
         dt.setTime(toDate);
 
-        return dt.get(Calendar.YEAR)-df.get(Calendar.YEAR);
+        return dt.get(Calendar.YEAR) - df.get(Calendar.YEAR);
     }
 
     /**
@@ -334,17 +294,16 @@ public class DateUtils {
      * @param fromDate
      * @param toDate
      * @return 月数
-     *
      */
     public static int getMonthByMinusDate(Date fromDate, Date toDate) {
-        Calendar df=Calendar.getInstance();
+        Calendar df = Calendar.getInstance();
         df.setTime(fromDate);
 
-        Calendar dt=Calendar.getInstance();
+        Calendar dt = Calendar.getInstance();
         dt.setTime(toDate);
 
-        return dt.get(Calendar.YEAR)*12+dt.get(Calendar.MONTH)-
-                (df.get(Calendar.YEAR)*12+df.get(Calendar.MONTH));
+        return dt.get(Calendar.YEAR) * 12 + dt.get(Calendar.MONTH) -
+                (df.get(Calendar.YEAR) * 12 + df.get(Calendar.MONTH));
     }
 
     /**
@@ -353,53 +312,47 @@ public class DateUtils {
      * @param fromDate
      * @param toDate
      * @return 天数
-     *
      */
     public static long getDayByMinusDate(Object fromDate, Object toDate) {
 
-        Date f=DateUtils.chgObject(fromDate);
+        Date f = DateUtils.chgObject(fromDate);
 
-        Date t=DateUtils.chgObject(toDate);
+        Date t = DateUtils.chgObject(toDate);
 
-        long fd=f.getTime();
-        long td=t.getTime();
+        long fd = f.getTime();
+        long td = t.getTime();
 
-        return (td-fd)/(24L * 60L * 60L * 1000L);
+        return (td - fd) / (24L * 60L * 60L * 1000L);
     }
 
     /**
      * 计算年龄
      *
-     * @param birthday
-     *      生日日期
-     * @param calcDate
-     *      要计算的日期点
+     * @param birthday 生日日期
+     * @param calcDate 要计算的日期点
      * @return
-     *
      */
     public static int calcAge(Date birthday, Date calcDate) {
 
-        int cYear=DateUtils.getYearOfDate(calcDate);
-        int cMonth=DateUtils.getMonthOfDate(calcDate);
-        int cDay=DateUtils.getDayOfDate(calcDate);
-        int bYear=DateUtils.getYearOfDate(birthday);
-        int bMonth=DateUtils.getMonthOfDate(birthday);
-        int bDay=DateUtils.getDayOfDate(birthday);
+        int cYear = DateUtils.getYearOfDate(calcDate);
+        int cMonth = DateUtils.getMonthOfDate(calcDate);
+        int cDay = DateUtils.getDayOfDate(calcDate);
+        int bYear = DateUtils.getYearOfDate(birthday);
+        int bMonth = DateUtils.getMonthOfDate(birthday);
+        int bDay = DateUtils.getDayOfDate(birthday);
 
-        if(cMonth>bMonth||(cMonth==bMonth&&cDay>bDay)){
-            return cYear-bYear;
-        }else{
-            return cYear-1-bYear;
+        if (cMonth > bMonth || (cMonth == bMonth && cDay > bDay)) {
+            return cYear - bYear;
+        } else {
+            return cYear - 1 - bYear;
         }
     }
 
     /**
      * 从身份证中获取出生日期
      *
-     * @param idno
-     *      身份证号码
+     * @param idno 身份证号码
      * @return
-     *
      */
     public static String getBirthDayFromIDCard(String idno) {
         Calendar cd = Calendar.getInstance();
@@ -424,10 +377,8 @@ public class DateUtils {
     /**
      * 在输入日期上增加（+）或减去（-）天数
      *
-     * @param date
-     *      输入日期
-     * @param iday
-     *      要增加或减少的天数
+     * @param date 输入日期
+     * @param iday 要增加或减少的天数
      */
     public static Date addDay(Date date, int iday) {
         Calendar cd = Calendar.getInstance();
@@ -442,10 +393,8 @@ public class DateUtils {
     /**
      * 在输入日期上增加（+）或减去（-）月份
      *
-     * @param date
-     *      输入日期
-     * @param imonth
-     *      要增加或减少的月分数
+     * @param date   输入日期
+     * @param imonth 要增加或减少的月分数
      */
     public static Date addMonth(Date date, int imonth) {
         Calendar cd = Calendar.getInstance();
@@ -460,10 +409,8 @@ public class DateUtils {
     /**
      * 在输入日期上增加（+）或减去（-）年份
      *
-     * @param date
-     *      输入日期
-     * @param iyear
-     *      要增加或减少的年数
+     * @param date  输入日期
+     * @param iyear 要增加或减少的年数
      */
     public static Date addYear(Date date, int iyear) {
         Calendar cd = Calendar.getInstance();
@@ -477,29 +424,30 @@ public class DateUtils {
 
     /**
      * 將OBJECT類型轉換為Date
+     *
      * @param date
      * @return
      */
-    public static Date chgObject(Object date){
+    public static Date chgObject(Object date) {
 
-        if(date!=null&&date instanceof Date){
-            return (Date)date;
+        if (date != null && date instanceof Date) {
+            return (Date) date;
         }
 
-        if(date!=null&&date instanceof String){
-            return DateUtils.stringToDate((String)date);
+        if (date != null && date instanceof String) {
+            return DateUtils.stringToDate((String) date);
         }
 
         return null;
 
     }
 
-    public static long getAgeByBirthday(String date){
+    public static long getAgeByBirthday(String date) {
 
         Date birthday = stringToDate(date, "yyyy-MM-dd");
         long sec = new Date().getTime() - birthday.getTime();
 
-        long age = sec/(1000*60*60*24)/365;
+        long age = sec / (1000 * 60 * 60 * 24) / 365;
 
         return age;
     }
@@ -514,7 +462,7 @@ public class DateUtils {
         //String s=DateUtil.dateToString(DateUtil.addDay(DateUtil.addYear(new Date(),1),-1));
 
 
-        long s=DateUtils.getDayByMinusDate("2012-01-01", "2012-12-31");
+        long s = DateUtils.getDayByMinusDate("2012-01-01", "2012-12-31");
         System.err.println(s);
 
 

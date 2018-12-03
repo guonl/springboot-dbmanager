@@ -132,62 +132,62 @@ public class SqlFactory {
          */
         Class c = obj.getClass();
         String tableName = c.getSimpleName();
-        StringBuffer strb = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         Set<String> set = paramMap.keySet();
         Object[] keys = set.toArray();
         int len = keys.length;
         if ("insert".compareToIgnoreCase(type)==0) {
-            strb.append("insert into " + tableName + "(");
+            buffer.append("insert into " + tableName + "(");
             for (int i = 0; i < len; i++) {
                 if (i < len - 1) {
-                    strb.append(keys[i]);
+                    buffer.append(keys[i]);
                     objParam.add(paramMap.get(keys[i]));
-                    strb.append(",");
+                    buffer.append(",");
                 } else {
-                    strb.append(keys[i]);
+                    buffer.append(keys[i]);
                     objParam.add(paramMap.get(keys[i]));
-                    strb.append(") values(");
+                    buffer.append(") values(");
                 }
             }
             for (int i = 0; i < len; i++) {
                 if (i < len - 1) {
-                    strb.append("?" + ",");
+                    buffer.append("?" + ",");
                 } else {
-                    strb.append("?" + ")");
+                    buffer.append("?" + ")");
                 }
             }
         }
         if ("delete".compareToIgnoreCase(type)==0) {
-            strb.append("delete from " + tableName);
+            buffer.append("delete from " + tableName);
             for (int i = 0; i < len; i++) {
                 if (((String) keys[i]).contains("id")
                         || ((String) keys[i]).contains("Id")) {
-                    strb.append(" where " + keys[i] + "=?");
+                    buffer.append(" where " + keys[i] + "=?");
                     objParam.add(paramMap.get(keys[i]));
                 }
             }
         }
         if ("update".compareToIgnoreCase(type)==0) {
-            strb.append("update " + tableName + " ");
+            buffer.append("update " + tableName + " ");
             for (int i = 0; i < len; i++) {
                 if (i < len - 1) {
-                    strb.append("set" + keys[i] + "=?");
+                    buffer.append("set " + keys[i] + "=?");
                     objParam.add(paramMap.get(keys[i]));
-                    strb.append(",");
+                    buffer.append(",");
                 } else {
-                    strb.append("set" + keys[i] + "=?");
+                    buffer.append("set" + keys[i] + "=?");
                     objParam.add(paramMap.get(keys[i]));
                 }
             }
             for (int i = 0; i < len; i++) {
                 if (((String) keys[i]).contains("id")
                         || ((String) keys[i]).contains("Id")) {
-                    strb.append(" where " + keys[i] + "=?");
+                    buffer.append(" where " + keys[i] + "=?");
                     objParam.add(paramMap.get(keys[i]));
                 }
             }
         }
-        sql = strb.toString();
+        sql = buffer.toString();
         return sql;
     }
 
@@ -207,7 +207,7 @@ public class SqlFactory {
         te.setBir(new Date());
         System.out.println("********添删改********");
         SqlFactory sf = new SqlFactory(te);
-        String sql = sf.createUpdateSql("delete");
+        String sql = sf.createUpdateSql("update");
         Object[] oo = sf.getSqlParams();
         System.out.println(sql);
         System.out.println(Arrays.toString(oo));
