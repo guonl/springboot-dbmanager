@@ -8,308 +8,112 @@
 <body>
 <section layout:fragment="content">
     <div class="container-fluid">
-        <form id="form-query" th:action="@{/gifts-repertory/exchange-record}"
-              th:object="${memberGiftsReportVo}" method="post"
+        <form id="form-query" th:action="@{/dbm/admin}"
+              th:object="${sqlQueryVO}" method="post"
               onsubmit="return checkFrom()">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title searchCondition">查询条件</h3>
+                    <h3 class="panel-title searchCondition">操作条件</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-2" >
-                            <div class="form-group">
-                                <input  type="hidden" th:field="*{giftId}" th:id="giftId"/>
-                                <input  type="hidden" th:field="*{giftsName}" th:id="giftsName"/>
-                                <input  type="hidden" th:field="*{marketDescr}" th:id="marketDescr"/>
-                                <input  type="hidden" th:field="*{marketCode}" th:id="marketCode"/>
-                                <input class="form-control form_search_height" type="text" id="giftId"
-                                       th:field="*{searchIds}" name="giftId"
-                                       onchange="checkNumberOfGift(this)"
-                                       placeholder="礼品ID"/>
-
-
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <select class=" form-control form_search_height select2 "  id="searchGiftName" style="width: 100%"
-                                        th:field="*{searchGiftsName}" name="searchGiftName">
-                                    <option th:value="*{searchGiftsName}" selected="selected" th:text="*{giftsName}" th:if="*{giftsName != null}">xxx</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" >
-                            <input class="form-control form_search_height" type="text"
-                                   th:field="*{searchUsersName}" name="searchUsersName"
-                                   placeholder="客户姓名/手机" />
-                        </div>
-
-                        <div class="col-sm-2">
-                            <select th:if="${memberGiftsReportVo.isMarketer eq false}"
-                                    th:field="*{searchMarketsName}"
-                                    name="searchMarketsName" id="searchMarketsName"
-                                    class="form-control form_search_height">
-                                <option th:value="*{searchMarketsName}" selected="selected" th:text="*{marketDescr}" th:if="*{marketDescr != null}">xxx</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2 ">
-                            <input type="text" th:field="*{startDate}" name="startDate"
-                                   class="starTime form-control form-date form_search_height"
-                                   placeholder="开始时间" id="starTime"/>
-                        </div>
-                        <span class="p1" style="margin-left: 22px">到</span>
-                        <div class="col-sm-2">
-                            <input type="text" th:field="*{endDate}" name="endDate"
-                                   class="endTime form-control form-date form_search_height"
-                                   placeholder="结束时间" style="width: 103%" id="endTime"/>
-                        </div>
-
-                        <div class="col-sm-3 stepWord" style="margin-left:25px">
-									<span class="form_search_height color-gray"
-                                          style="border-color: #fff; color: #888">渠道来源</span>
-                            <select class="form_search_height color-gray" th:field="*{searchFromSource}">
-                                <option th:value="0">全部</option>
-                                <option th:value="1">App</option>
-                                <option th:value="2">微信</option>
-                                <option th:value="3">线下门店</option>
+                        <div class="col-sm-3 stepWord">
+                            <span class="form_search_height color-gray">请选择要操作的表</span>
+                            <select id="tableName" class="selectpicker color-gray" data-live-search="true">
+                                <option th:value="--">请选择</option>
                             </select>
                         </div>
 
                         <div class="col-sm-3 stepWord">
-									<span class="form_search_height color-gray"
-                                          style="border-color: #fff; color: #888">兑换货币</span> <select
-                                class="form_search_height color-gray"
-                                th:field="*{convertType}">
-                            <option th:value="0">全选</option>
-                            <option th:value="1">积分</option>
-                            <option th:value="2">金币</option>
-                        </select>
+                            <span class="form_search_height color-gray" >选择操作类型</span>
+                            <select id="sqlType" class="form_search_height color-gray" th:field="*{sqlType}">
+                                <option th:value="SELECT">查询</option>
+                                <option th:value="UPDATE">更新</option>
+                                <option th:value="INSERT">插入</option>
+                                <option th:value="DELETE">删除</option>
+                            </select>
                         </div>
 
-                        <button id="btn-submit" class="btn btn-primary form_search_height btn2"
-                                type="submit">搜索
+                        <button class="btn btn-primary form_search_height btn2"
+                                type="button" onclick="confirm_type()">确定
                         </button>
                     </div>
 
 
-                    <span class="searchResult">查询结果</span>
-
+                    <span class="searchResult">操作字段</span>
                     <hr/>
-                    <div class="row">
-                        <label> 共计 <span th:text="*{rct}"></span>&nbsp;条，每页显示 <span
-                                th:text="*{ps}"></span>，当前显示为第 <span th:text="*{pn}"></span>&nbsp;页
-                        </label>
-                    </div>
-                    <!--<div class="row" style="overflow: auto;">-->
-                        <!--<div class="col-sm-12 table-responsive">-->
-                            <!--<table id="demo-dt-basic"-->
-                                   <!--class="table table-striped table-bordered dataTable no-footer dtr-inline">-->
-                                <!--<thead>-->
-                                <!--<tr role="row">-->
-                                    <!--<th class="min-desktop">礼品ID</th>-->
-                                    <!--<th class="min-desktop">礼品名称</th>-->
-                                    <!--<th class="min-desktop">规格型号</th>-->
-                                    <!--<th class="min-desktop">兑换货币</th>-->
-                                    <!--<th class="min-desktop">兑换值</th>-->
-                                    <!--<th class="min-desktop">备注</th>-->
-                                    <!--<th class="min-desktop">客户姓名</th>-->
-                                    <!--<th class="min-desktop">客户手机</th>-->
-                                    <!--<th class="min-desktop">兑换数量</th>-->
-                                    <!--<th class="min-desktop">是否自提</th>-->
-                                    <!--<th class="min-desktop">渠道来源</th>-->
-                                    <!--<th class="min-desktop">扣除总值</th>-->
-                                    <!--<th class="min-desktop">兑换日期</th>-->
-                                    <!--<th class="min-desktop">商场ID</th>-->
-                                    <!--<th class="min-desktop">归属商场</th>-->
-                                    <!--<th class="min-desktop">兑换操作人</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody th:if="${not #lists.isEmpty(gvoList)}">-->
-                                <!--<tr th:each="gift: ${gvoList}">-->
-                                    <!--<td th:text="${gift.giftId}" style="min-width: 5rem"></td>-->
-                                    <!--<td th:text="${gift.giftsName}" style="min-width: 8rem"></td>-->
-                                    <!--<td th:text="${gift.specification}" style="min-width: 6rem"></td>-->
-                                    <!--<td style="min-width: 6rem" th:switch="${gift.convertType}">-->
-                                        <!--<span th:case="1">积分</span> <span th:case="2">金币</span> <span-->
-                                            <!--th:case="3">其他</span>-->
-                                    <!--</td>-->
-                                    <!--<td th:text="${gift.costScore}" style="min-width: 7rem"></td>-->
-                                    <!--<td th:text="${gift.mark}" style="min-width: 4rem"></td>-->
-                                    <!--<td th:text="${gift.userName}" style="min-width: 6rem"></td>-->
-                                    <!--<td th:text="${gift.mobile}" style="min-width: 6rem"></td>-->
-                                    <!--<td th:text="${gift.exchangeCount}" style="min-width: 6rem"></td>-->
-                                    <!--&lt;!&ndash;<td th:text="${gift.isPickup}" style="min-width: 6rem"></td>&ndash;&gt;-->
 
 
-                                    <!--<td th:switch="${gift.isPickup}" style="min-width: 6rem">-->
-                                        <!--<span th:case="true">是</span>-->
-                                        <!--<span th:case="false">否</span>-->
-                                    <!--</td>-->
-                                    <!--<td th:switch="${gift.fromSource}" style="min-width: 6rem">-->
-                                        <!--<span th:case="1">App</span>-->
-                                        <!--<span th:case="2">微信</span>-->
-                                        <!--<span th:case="3">线下门店</span>-->
-                                    <!--</td>-->
-                                    <!--<td th:text="${gift.deductScore}" style="min-width: 7rem"></td>-->
-                                    <!--<td-->
-                                            <!--th:text="${#calendars.format(gift.exchangeDate,'yyyy-MM-dd HH:mm:ss')}"-->
-                                            <!--style="min-width: 7rem"></td>-->
-                                    <!--<td th:text="${gift.marketCode}" style="min-width: 5rem"></td>-->
-                                    <!--<td th:text="${gift.marketDescr}" style="min-width: 7rem"></td>-->
-                                    <!--<td th:text="${gift.exchangeUserName}"-->
-                                        <!--style="min-width: 7rem"></td>-->
-                                <!--</tr>-->
-                                <!--</tbody>-->
-                            <!--</table>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
         </form>
     </div>
-    <link rel="stylesheet" th:href="@{/css/select2.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}" />
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
     <script th:src="@{/js/select2.js}"></script>
     <script src="https://cdn.bootcss.com/select2/4.0.6-rc.1/js/i18n/zh-CN.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        $(document)
-            .ready(
-                function () {
-                    var d = new Date();
-                    var starTime = d.getFullYear() - 1 + "-"
-                        + (d.getMonth() + 1) + "-"
-                        + d.getDate(), endTime = d
-                            .getFullYear()
-                        + "-"
-                        + (d.getMonth() + 1)
-                        + "-"
-                        + d.getDate();
-                    $(".form-date").datepicker({
-                        format: 'yyyy-mm-dd',
-                        language: 'zh-CN',
-                        autoclose: true,
-                        startDate: starTime,
-                        endDate: endTime
-                    });
-                    validCheckDateTime('#starTime', '#endTime');
-//                    $("#searchGiftName").select2("val",$("#giftId").val());
-                    $(".select2").select2({
-                        language:'zh-CN',
-                        minimumInputLength:1,
-                        width:'resolve',
-                        allowClear: true,//允许清空
-                        placeholder:'礼品名称',
-                        closeOnSelect: false,
-                        tags:false,
-//                        maximumSelectionLength:3,
-                        ajax: {
-                            url: getUrmsPath() + "common/searchGifts" ,
-                            dataType: 'json',
-                            type: "GET",
-                            delay: 250,
-                            data: function (params) {
-//                                console.log(params)
-                                return {
-                                    data: params.term, // search term
-                                    type:false,
-                                    giftScene:"1101,2102" // 只展示礼品自提和线下兑换
-                                };
-                            },
-                            processResults: function (data, params) {
-                                console.log(data)
-                                params.page = params.page || 1;
-                                var items = [];
-                                if ( data.errorCode = 200){
-                                    for (var i = 0; i < data.data.length;i++){
-                                        var item = {};
-                                        item.id  = data.data[i].id;
-                                        item.text = data.data[i].name;
-                                        items.push(item);
-                                    }
-                                    return {
-                                        results: items,
-                                    };
-                                }
+        $(function () {
+            //请求所有的表
+            $.ajax({
+                type : "POST",
+                url : "/table/all-tables",
+                dataType : 'json',
+                success : function(data) {
+                    if (data.code == "200") {
+                        var tableList = data.dataMap;
+                        for (var i = 0; i < tableList.length; i++) {
+                            var tableName = tableList[i];
+                            var html = $('<option value="' + tableName + '">' + tableName + '</option>');
+                            $('#tableName').append(html);
+                        }
+                        $('#tableName').selectpicker('refresh');
+                        $('#tableName').selectpicker('show');
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error : function(
+                    XMLHttpRequest,
+                    textStatus, errorThrown) {
+                    alert("请求错误！");
+                }
+            });
+        });
 
-                            },
-                            cache: true
-                        },
+        //确定按钮
+        function confirm_type(){
+            var tableName = $("#tableName option:selected").val();
+            var sqlType = $("#sqlType option:selected").val();
+            if(tableName == "--"){
+                alert("请选择要操作的表！");
+                return;
+            }
+            $.ajax({
+                type : "POST",
+                url : "/dbm/confirm",
+                data:{
+                    tableName: tableName,
+                    sqlType: sqlType
+                },
+                dataType : 'json',
+                success : function(data) {
+                    if (data.code == "200") {
+                        var columnList = data.dataMap;
 
-//                        escapeMarkup: function (markup) { return markup; },
-                        // 函数用于呈现当前的选择,
-                        templateSelection: function formatRepoSelection(repo){
-                            console.log($(".select2").val());
-                            console.log( $("#giftId").val());
-                            $("#giftsName").val(repo.text);
-                            $("#giftId").val(repo.id);
-                            return repo.text ;
-                        } ,
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error : function(
+                    XMLHttpRequest,
+                    textStatus, errorThrown) {
+                    alert("请求错误！");
+                }
+            });
 
-                        templateResult: function formatRepo(repo){return repo.text;} // 函数用来渲染结果
-                    });
-
-//                    if ($("#giftsName").val() != null && $("#giftId").val() != null){
-//                        $("#searchGiftName").select2("data",{"id":$("#giftId").val(), "text":$("#giftsName").val()})
-////                        $("#searchGiftName").select2("val",$("#giftId").val());
-//                    }
-//                    if ($("#marketCode").val() != null && $("#marketOwner").val() != null){
-////                        $("#searchMarketsName").select2("data",{"id":$("#marketCode").val(), "text":$("#marketOwner").val()})
-//                    }
-                    $("#searchMarketsName").select2({
-                        language:'zh-CN',
-                        minimumInputLength:1,
-                        allowClear: true,//允许清空
-                        placeholder:'商场名称',
-                        closeOnSelect: false,
-                        tags:false,
-                        allowClear :true,
-//                        maximumSelectionLength:3,
-                        ajax: {
-                            url: getUrmsPath() + "common/searchMarketName" ,
-                            dataType: 'json',
-                            type: "GET",
-                            delay: 250,
-                            data: function (params) {
-                                console.log(params)
-                                return {
-                                    data: params.term, // search term
-                                    type:true
-                                };
-                            },
-                            processResults: function (data, params) {
-                                console.log(data)
-                                params.page = params.page || 1;
-                                var items = [];
-                                if ( data.errorCode = 200){
-                                    for (var i = 0; i < data.data.length;i++){
-                                        var item = {};
-                                        item.id  = data.data[i].marketOnwer;
-                                        item.text = data.data[i].marketDesc;
-                                        items.push(item);
-                                    }
-                                    return {
-                                        results: items,
-                                    };
-                                }
-
-                            },
-                            cache: true
-                        },
-                        escapeMarkup: function (markup) { return markup; },
-                        templateResult: function formatRepo(repo){return repo.text;}, // 函数用来渲染结果
-                        templateSelection: function formatRepoSelection(repo){
-                            console.log("1234321");
-                            $("#marketDescr").val(repo.text);
-                            $("#marketCode").val(repo.id);
-                            console.log($("#marketDescr").val());
-                            return repo.text;} // 函数用于呈现当前的选择
-                    });
-
-                })
+        }
         /*]]>*/
     </script>
 </section>

@@ -5,7 +5,7 @@ import com.guonl.exception.MySqlException;
 import com.guonl.factory.my.SqlFactory;
 import com.guonl.util.SqlTypeEnum;
 import com.guonl.vo.FrontResult;
-import com.guonl.vo.QueryVO;
+import com.guonl.vo.SqlQueryVO;
 import com.guonl.xml.TableBlackBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -73,7 +72,7 @@ public class TableService {
         return field;
     }
 
-    public FrontResult sqlExecute(QueryVO queryVO) {
+    public FrontResult sqlExecute(SqlQueryVO queryVO) {
         String sql = queryVO.getSql();
         String tableName = queryVO.getTableName();
         Matcher matcher = matchSql(sql);

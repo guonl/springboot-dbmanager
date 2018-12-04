@@ -1,14 +1,18 @@
 package com.guonl.controller;
 
 import com.guonl.service.TableService;
+import com.guonl.util.SqlTypeEnum;
 import com.guonl.vo.FrontResult;
+import com.guonl.vo.SqlQueryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,9 +34,30 @@ public class PageController {
     }
 
 
+    /**
+     * 主界面
+     * @param model
+     * @param sqlQueryVO
+     * @return
+     */
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
-    public String admin(){
+    public String admin(Model model, SqlQueryVO sqlQueryVO){
+        model.addAttribute("sqlQueryVO", sqlQueryVO);
         return "dbm/admin";
+    }
+
+    /**
+     * 根据所选择的表和类型展示操作界面
+     * @param model
+     * @param sqlQueryVO
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/confirm",method = RequestMethod.POST)
+    public FrontResult confirm(Model model, SqlQueryVO sqlQueryVO){
+        String tableName = sqlQueryVO.getTableName();
+        List<String> tableColumn = tableService.getTableColumn(tableName);
+        return FrontResult.success(tableColumn);
     }
 
     @ResponseBody
