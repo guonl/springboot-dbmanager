@@ -8,47 +8,89 @@
 <body>
 <section layout:fragment="content">
     <div class="container-fluid">
-        <form id="form-query" th:action="@{/dbm/admin}"
-              th:object="${sqlQueryVO}" method="post"
-              onsubmit="return checkFrom()">
-            <div class="panel">
-                <div class="panel-heading">
-                    <h3 class="panel-title searchCondition">操作条件</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-3 stepWord">
-                            <span class="form_search_height color-gray">请选择要操作的表</span>
-                            <select id="tableName" class="selectpicker color-gray" data-live-search="true">
-                                <option th:value="--">请选择</option>
-                            </select>
-                        </div>
-
-                        <div class="col-sm-3 stepWord">
-                            <span class="form_search_height color-gray" >选择操作类型</span>
-                            <select id="sqlType" class="form_search_height color-gray" th:field="*{sqlType}">
-                                <option th:value="SELECT">查询</option>
-                                <option th:value="UPDATE">更新</option>
-                                <option th:value="INSERT">插入</option>
-                                <option th:value="DELETE">删除</option>
-                            </select>
-                        </div>
-
-                        <button class="btn btn-primary form_search_height btn2"
-                                type="button" onclick="confirm_type()">确定
-                        </button>
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title searchCondition">操作条件</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-5 stepWord">
+                        <span>请选择要操作的表</span>
+                        <select id="tableName" class="selectpicker color-gray form_search_height"
+                                data-live-search="true">
+                            <option th:value="--">请选择</option>
+                        </select>
                     </div>
 
+                    <div class="col-sm-4 stepWord">
+                        <span>选择操作类型</span>
+                        <select id="sqlType" class="form_search_height color-gray">
+                            <option th:value="SELECT">查询</option>
+                            <option th:value="UPDATE">更新</option>
+                            <option th:value="INSERT">插入</option>
+                            <option th:value="DELETE">删除</option>
+                        </select>
+                    </div>
 
-                    <span class="searchResult">操作字段</span>
-                    <hr/>
-
-
+                    <button class="btn btn-primary form_search_height btn2"
+                            type="button" onclick="confirm_type()">确定
+                    </button>
                 </div>
             </div>
-        </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title searchCondition">操作字段</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12 table-responsive">
+                    <!-- update模块 -->
+                    <div id="update-div" style="width:100%;">
+                        <div id="left-div" style="width:45%;float:left;">
+
+                            <div class="form-group">
+                                <span class="lable_form_title_five">权益名称/ID</span>
+                                <input type="text" class="form-control form_search_height color-gray" />
+                            </div>
+                            <div class="form-group">
+                                <span class="lable_form_title_five">权益名称/ID</span>
+                                <input type="text" class="form-control form_search_height color-gray" />
+                            </div>
+                        </div>
+
+                        <div id="right-div" style="width:45%;float:right;">
+
+                            <div class="form-group giftsBag1 ">
+                                <div class="row">
+                                    <div class="col-sm-3 control-label">
+                                        <label class="lable_form_title_five lable_lipin">礼品1</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input name="" class="form-control color-gray" placeholder="请输入" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="select-div" hidden="hidden">
+
+                    </div>
+
+                    <div id="insert-div" hidden="hidden">
+
+                    </div>
+
+                    <div id="delete-div" hidden="hidden">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}"/>
     <script th:src="@{/js/bootstrap-select.min.js}"></script>
     <script th:src="@{/js/select2.js}"></script>
     <script src="https://cdn.bootcss.com/select2/4.0.6-rc.1/js/i18n/zh-CN.js"></script>
@@ -57,10 +99,10 @@
         $(function () {
             //请求所有的表
             $.ajax({
-                type : "POST",
-                url : "/table/all-tables",
-                dataType : 'json',
-                success : function(data) {
+                type: "POST",
+                url: "/table/all-tables",
+                dataType: 'json',
+                success: function (data) {
                     if (data.code == "200") {
                         var tableList = data.dataMap;
                         for (var i = 0; i < tableList.length; i++) {
@@ -74,46 +116,46 @@
                         alert(data.message);
                     }
                 },
-                error : function(
-                    XMLHttpRequest,
-                    textStatus, errorThrown) {
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
                     alert("请求错误！");
                 }
             });
         });
 
         //确定按钮
-        function confirm_type(){
+        function confirm_type() {
             var tableName = $("#tableName option:selected").val();
             var sqlType = $("#sqlType option:selected").val();
-            if(tableName == "--"){
+            if (tableName == "--") {
                 alert("请选择要操作的表！");
                 return;
             }
             $.ajax({
-                type : "POST",
-                url : "/dbm/confirm",
-                data:{
+                type: "POST",
+                url: "/dbm/confirm",
+                data: {
                     tableName: tableName,
                     sqlType: sqlType
                 },
-                dataType : 'json',
-                success : function(data) {
+                dataType: 'json',
+                success: function (data) {
                     if (data.code == "200") {
                         var columnList = data.dataMap;
+                        //封装表字段
 
                     } else {
                         alert(data.message);
                     }
                 },
-                error : function(
-                    XMLHttpRequest,
-                    textStatus, errorThrown) {
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
                     alert("请求错误！");
                 }
             });
 
         }
+
         /*]]>*/
     </script>
 </section>
