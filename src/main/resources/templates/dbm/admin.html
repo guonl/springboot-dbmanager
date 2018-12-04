@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="panel">
             <div class="panel-heading">
-                <h3 class="panel-title searchCondition">操作条件</h3>
+                <h3 class="panel-title searchCondition">选择条件</h3>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -37,55 +37,110 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-        <div class="panel">
             <div class="panel-heading">
                 <h3 class="panel-title searchCondition">操作字段</h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12 table-responsive">
+                <div class="col-sm-12" style="text-align: center;">
                     <!-- update模块 -->
-                    <div id="update-div" style="width:100%;">
-                        <div id="left-div" style="width:45%;float:left;">
-
-                            <div class="form-group">
-                                <span class="lable_form_title_five">权益名称/ID</span>
-                                <input type="text" class="form-control form_search_height color-gray" />
+                    <div id="update-div">
+                        <div id="update-left" class="col-md-4 col-sm-5 col-lg-4">
+                            <div style="height: 40px;width:100%;line-height: 40px;font-weight: bolder;font-size: medium;color: red">set字段</div>
+                            <div style="display: flex;line-height: 40px">
+                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">字段名称</div>
+                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">查询值</div>
                             </div>
-                            <div class="form-group">
-                                <span class="lable_form_title_five">权益名称/ID</span>
-                                <input type="text" class="form-control form_search_height color-gray" />
-                            </div>
-                        </div>
-
-                        <div id="right-div" style="width:45%;float:right;">
-
-                            <div class="form-group giftsBag1 ">
+                            <div>
                                 <div class="row">
-                                    <div class="col-sm-3 control-label">
-                                        <label class="lable_form_title_five lable_lipin">礼品1</label>
-                                    </div>
+                                    <div class="col-sm-6 control-label"><label>字段1</label></div>
                                     <div class="col-sm-6">
-                                        <input name="" class="form-control color-gray" placeholder="请输入" />
+                                        <input type="text" class="form-control" placeholder="请输入"/>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-sm-6 control-label"><label>字段2</label></div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" placeholder="请输入"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="update-right" class="col-md-4 col-sm-5 col-lg-4 col-md-offset-2">
+                            <div style="height: 40px;width:100%;line-height: 40px;font-weight: bolder;font-size: medium;color: red">where字段</div>
+                            <div style="display: flex;line-height: 40px">
+                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">字段名称</div>
+                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">查询值</div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-sm-6 control-label"><label>字段1</label></div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" placeholder="请输入"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 control-label"><label>字段2</label></div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" placeholder="请输入"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="select-div" hidden="hidden">
 
-                    </div>
+                    <!--<div id="update-div" style="width:100%;text-align:center">-->
+                    <!--<div id="left-div" style="width:45%;float:left;">-->
+                    <!--<div>-->
+                    <!--<span><h4 style="color: red;">set字段</h4></span>-->
+                    <!--</div>-->
 
-                    <div id="insert-div" hidden="hidden">
+                    <!--<div class="row">-->
+                    <!--<div class="col-sm-3 control-label"><label>字段1</label></div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<input type="text" class="form-control" placeholder="请输入" />-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                    <!--<div class="col-sm-3 control-label"><label>字段2</label></div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<input type="text" class="form-control" placeholder="请输入" />-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
 
-                    </div>
+                    <!--<div id="right-div" style="width:45%;float:right;">-->
 
-                    <div id="delete-div" hidden="hidden">
+                    <!--<div>-->
+                    <!--<span><h4 style="color: red;">where字段</h4></span>-->
+                    <!--</div>-->
 
-                    </div>
+                    <!--<div class="row">-->
+                    <!--<div class="col-sm-3 control-label"><label>字段1</label></div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<input type="text" class="form-control" placeholder="请输入" />-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                    <!--<div class="col-sm-3 control-label"><label>字段2</label></div>-->
+                    <!--<div class="col-sm-3">-->
+                    <!--<input type="text" class="form-control" placeholder="请输入" />-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div id="select-div" hidden="hidden">-->
+
+                    <!--</div>-->
+
+                    <!--<div id="insert-div" hidden="hidden">-->
+
+                    <!--</div>-->
+
+                    <!--<div id="delete-div" hidden="hidden">-->
+
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -129,6 +184,16 @@
             var sqlType = $("#sqlType option:selected").val();
             if (tableName == "--") {
                 alert("请选择要操作的表！");
+                return;
+            }
+            if (sqlType == "SELECT") {
+                alert("暂不支持select的操作！");
+                return;
+            } else if (sqlType == "INSERT") {
+                alert("暂不支持insert的操作！");
+                return;
+            } else if (sqlType == "DELETE") {
+                alert("暂不支持delete的操作！");
                 return;
             }
             $.ajax({
