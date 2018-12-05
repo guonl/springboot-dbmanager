@@ -1,0 +1,27 @@
+.update-div {
+    display: none;
+}
+
+.sql-h1 {
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    font-weight: bolder;
+    font-size: medium;
+    color: red;
+}
+
+.sql-h2 {
+    width: 50%;
+    height: 40px;
+    font-weight: bolder;
+    color: #0c199c;
+}
+
+.sql-title {
+    display: flex;
+    line-height: 40px;
+}
+
+
+

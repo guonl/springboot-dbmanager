@@ -43,47 +43,59 @@
             <div class="panel-body">
                 <div class="col-sm-12" style="text-align: center;">
                     <!-- update模块 -->
-                    <div id="update-div">
-                        <div id="update-left" class="col-md-4 col-sm-5 col-lg-4">
-                            <div style="height: 40px;width:100%;line-height: 40px;font-weight: bolder;font-size: medium;color: red">set字段</div>
-                            <div style="display: flex;line-height: 40px">
-                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">字段名称</div>
-                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">查询值</div>
+                    <div class="update-div">
+                        <div class="update-left col-md-4 col-sm-5 col-lg-4">
+                            <div class="sql-h1">set字段</div>
+                            <div class="sql-title">
+                                <div class="sql-h2">字段名称</div>
+                                <div class="sql-h2">查询值</div>
                             </div>
-                            <div>
-                                <div class="row">
-                                    <div class="col-sm-6 control-label"><label>字段1</label></div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="请输入"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6 control-label"><label>字段2</label></div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="请输入"/>
-                                    </div>
-                                </div>
+                            <div class="sql-row-set">
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-6 control-label"><label>id</label></div>-->
+                                    <!--<div class="col-sm-6">-->
+                                        <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-6 control-label"><label>sql</label></div>-->
+                                    <!--<div class="col-sm-6">-->
+                                        <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-6 control-label"><label>execute_time</label></div>-->
+                                    <!--<div class="col-sm-6">-->
+                                        <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-sm-6 control-label"><label>connect_id</label></div>-->
+                                    <!--<div class="col-sm-6">-->
+                                        <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
-                        <div id="update-right" class="col-md-4 col-sm-5 col-lg-4 col-md-offset-2">
-                            <div style="height: 40px;width:100%;line-height: 40px;font-weight: bolder;font-size: medium;color: red">where字段</div>
-                            <div style="display: flex;line-height: 40px">
-                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">字段名称</div>
-                                <div style="width: 50%;height: 40px;font-weight: bolder;color: #0c199c">查询值</div>
+                        <div class="update-right col-md-4 col-sm-5 col-lg-4 col-md-offset-2">
+                            <div class="sql-h1">where字段</div>
+                            <div class="sql-title">
+                                <div class="sql-h2">字段名称</div>
+                                <div class="sql-h2">查询值</div>
                             </div>
-                            <div>
-                                <div class="row">
-                                    <div class="col-sm-6 control-label"><label>字段1</label></div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="请输入"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6 control-label"><label>字段2</label></div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="请输入"/>
-                                    </div>
-                                </div>
+                            <div class="sql-row-where">
+                                <!--<div class="row">-->
+                                <!--<div class="col-sm-6 control-label"><label>字段1</label></div>-->
+                                <!--<div class="col-sm-6">-->
+                                <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                <!--<div class="col-sm-6 control-label"><label>字段2</label></div>-->
+                                <!--<div class="col-sm-6">-->
+                                <!--<input type="text" class="form-control" placeholder="请输入"/>-->
+                                <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -145,6 +157,7 @@
             </div>
         </div>
     </div>
+    <link rel="stylesheet" th:href="@{/css/dbManager.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}"/>
     <script th:src="@{/js/bootstrap-select.min.js}"></script>
     <script th:src="@{/js/select2.js}"></script>
@@ -208,6 +221,16 @@
                     if (data.code == "200") {
                         var columnList = data.dataMap;
                         //封装表字段
+                        if (sqlType == "UPDATE") {
+                            var str = getSqlRow(columnList);
+                            var sqlRowSet = window.document.getElementsByClassName("sql-row-set");
+                            var sqlRowWhere = window.document.getElementsByClassName("sql-row-where");
+                            sqlRowSet.innerHTML = '';
+                            sqlRowWhere.innerHTML = '';
+                            sqlRowSet.innerHTML = str;
+                            sqlRowWhere.innerHTML = str;
+                            $(".update-div").show();
+                        }
 
                     } else {
                         alert(data.message);
@@ -218,6 +241,20 @@
                     alert("请求错误！");
                 }
             });
+
+            function getSqlRow(columnList) {
+                var str = "";
+                for (var i = 0; i < columnList.length; i++) {
+                    var columnName = columnList[i];
+                    str += "<div class=\"row\">\n" +
+                        "<div class=\"col-sm-6 control-label\"><label>" + columnName + "</label></div>\n" +
+                        "<div class=\"col-sm-6\">\n" +
+                        "<input type=\"text\" class=\"form-control\" placeholder=\"请输入\"/>\n" +
+                        "</div>\n" +
+                        "</div>";
+                }
+                return str;
+            }
 
         }
 

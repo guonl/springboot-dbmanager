@@ -46,6 +46,12 @@ public class PageController {
         return "dbm/admin";
     }
 
+    @RequestMapping(value = "/blacklist",method = RequestMethod.GET)
+    public String blacklist(Model model, SqlQueryVO sqlQueryVO){
+        model.addAttribute("sqlQueryVO", sqlQueryVO);
+        return "dbm/blacklist";
+    }
+
     /**
      * 根据所选择的表和类型展示操作界面
      * @param model
