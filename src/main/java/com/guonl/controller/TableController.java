@@ -2,6 +2,7 @@ package com.guonl.controller;
 
 import com.guonl.service.TableService;
 import com.guonl.vo.FrontResult;
+import com.guonl.vo.SqlExecuteVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,9 +42,34 @@ public class TableController {
      */
     @ResponseBody
     @RequestMapping(value = "/table-column",method = RequestMethod.POST)
-    public FrontResult getTableColumn(@PathVariable String tableName){
+    public FrontResult getTableColumn(String tableName){
         List<String> column = tableService.getTableColumn(tableName);
         return FrontResult.success(column);
+    }
+
+
+    /**
+     * sql预览
+     * @param sqlExecuteVO
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/sql-pre",method = RequestMethod.POST)
+    public FrontResult sqlPreview(SqlExecuteVO sqlExecuteVO){
+        FrontResult result = tableService.sqlPreview(sqlExecuteVO);
+        return FrontResult.success(result);
+    }
+
+    /**
+     * 执行
+     * @param sqlExecuteVO
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/execute-sql",method = RequestMethod.POST)
+    public FrontResult executeSql(SqlExecuteVO sqlExecuteVO){
+        FrontResult result = tableService.executeSql(sqlExecuteVO);
+        return FrontResult.success(result);
     }
 
 

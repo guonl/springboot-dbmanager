@@ -5,6 +5,7 @@ import com.guonl.exception.MySqlException;
 import com.guonl.factory.my.SqlFactory;
 import com.guonl.util.SqlTypeEnum;
 import com.guonl.vo.FrontResult;
+import com.guonl.vo.SqlExecuteVO;
 import com.guonl.vo.SqlQueryVO;
 import com.guonl.xml.TableBlackBuilder;
 import org.slf4j.Logger;
@@ -177,5 +178,13 @@ public class TableService {
         logger.info("参数为：" + Arrays.toString(sqlParam));
         int update = jdbcTemplate.update(sql, sqlParam);
         return update;
+    }
+
+    public FrontResult sqlPreview(SqlExecuteVO sqlExecuteVO) {
+        return null;
+    }
+
+    public FrontResult executeSql(SqlExecuteVO sqlExecuteVO) {
+        return null;
     }
 }
