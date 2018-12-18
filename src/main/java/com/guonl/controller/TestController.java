@@ -1,7 +1,5 @@
 package com.guonl.controller;
 
-import com.guonl.po.Users;
-import com.guonl.service.TestService;
 import com.guonl.vo.FrontResult;
 import com.guonl.xml.TableBlackBuilder;
 import com.guonl.xml.bean.BlackTables;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,8 +26,6 @@ import java.util.stream.Collectors;
 public class TestController {
 
     @Autowired
-    private TestService testService;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -39,12 +34,6 @@ public class TestController {
         return "index";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/db", method = RequestMethod.GET)
-    public FrontResult testDb(Model model) {
-        List<Users> list = testService.queryList();
-        return FrontResult.success(list);
-    }
 
     @ResponseBody
     @RequestMapping(value = "/tem/{name}", method = RequestMethod.GET)
@@ -71,6 +60,11 @@ public class TestController {
     }
 
 
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public String page(Model model) {
+        model.addAttribute("test","后台传入信息……");
+        return "test";
+    }
 
 
 

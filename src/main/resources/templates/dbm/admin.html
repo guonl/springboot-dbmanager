@@ -28,7 +28,7 @@
                             <option th:value="SELECT">查询</option>
                             <option th:value="UPDATE">更新</option>
                             <option th:value="INSERT">插入</option>
-                            <option th:value="DELETE">删除</option>
+                            <!--<option th:value="DELETE">删除</option>-->
                         </select>
                     </div>
 
@@ -48,7 +48,7 @@
                             <div class="sql-h1">set字段</div>
                             <div class="sql-title">
                                 <div class="sql-h2">字段名称</div>
-                                <div class="sql-h2">查询值</div>
+                                <div class="sql-h2">设置值</div>
                             </div>
                             <div class="sql-row-set">
 
@@ -66,27 +66,109 @@
                         </div>
                     </div>
 
-                    <!-- 执行按钮 -->
-                    <div class="execute-div">
-                        <button class="btn btn-primary form_search_height btn2"
-                                type="button" onclick="execute_btn()">执行
+                    <!-- select模块 -->
+                    <div class="select-div">
+
+                    </div>
+
+                    <!-- insert模块 -->
+                    <div class="insert-div">
+
+                    </div>
+
+                    <!-- delete模块 -->
+                    <div class="delete-div">
+
+                    </div>
+
+                    <!-- 预执行按钮 -->
+                    <div class="preview-div">
+                        <button id="preview_btn" class="btn btn-primary form_search_height btn2"
+                                type="button" onclick="preview_btn(this)">预览
                         </button>
                     </div>
+                    <!-- 执行 -->
+                    <span class="execute-div">
+                        <button id="execute_btn" class="btn btn-primary form_search_height btn2"
+                                type="button" onclick="execute_dialog()">执行
+                        </button>
+                    </span>
 
                 </div>
             </div>
+
+            <div class="pre-result">
+                <div class="panel-heading">
+                    <h3 class="panel-title searchCondition">预览结果</h3>
+                </div>
+                <div class="execute-result">
+                    <label>SQL预览：</label>
+                    <span id="sql"></span>
+                    <label>参数预览：</label>
+                    <span id="sql-para"></span>
+                    <label>影响数据：</label>
+                    <span>共涉及到&nbsp;<span id="sql-count"></span>&nbsp;条</span>
+
+
+                    <!-- 执行按钮 -->
+                    <!--<span class="execute-div">-->
+                        <!--<button class="btn btn-primary form_search_height btn2"-->
+                                <!--type="button" onclick="execute_btn(this)">执行-->
+                        <!--</button>-->
+                    <!--</span>-->
+                </div>
+            </div>
+
             <div class="result">
                 <div class="panel-heading">
                     <h3 class="panel-title searchCondition">执行结果</h3>
                 </div>
                 <div class="execute-result">
-                    <div>执行状态：</div><span id="sql-status"></span>
-                    <div>执行的sql：</div><span id="sql"></span>
-                    <div>执行的参数：</div><span id="sql-para"></span>
+                    <label>执行状态：</label>
+                    <span id="sql-status"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="modal fade" id="exe_dialog" tabindex="-1" role="dialog"
+                     aria-hidden="true" data-backdrop="static">
+                    <div class="modal-dialog" style="width: 300px;">
+                        <div class="modal-content" style="text-align: center;">
+                            <div class="modal-body">
+                                <h4>一共影响<span id="tips"></span>条</h4>
+                                <h4> 是否确认执行？</h4>
+                            </div>
+                            <div class="modal-footer" style="text-align: center;">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">返回
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="execute_btn()">确认
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- 提示弹框 -->
+    <div class="modal fade" id="messageShow" tabindex="-1" role="dialog"
+         aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" style="width: 300px;">
+            <div class="modal-content" style="text-align: center;">
+                <div class="modal-body">
+                    <h4 class="upMessage"></h4>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" data-dismiss="modal" id="closeModalBtn"
+                            class="btn btn-primary btn-default">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <link rel="stylesheet" th:href="@{/css/dbManager.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}"/>
     <script th:src="@{/js/bootstrap-select.min.js}"></script>
@@ -98,7 +180,7 @@
             //请求所有的表
             $.ajax({
                 type: "POST",
-                url: "/table/all-tables",
+                url: '/dbm/all-tables',
                 dataType: 'json',
                 success: function (data) {
                     if (data.code == "200") {
@@ -126,22 +208,26 @@
             var tableName = $("#tableName option:selected").val();
             var sqlType = $("#sqlType option:selected").val();
             if (tableName == "--") {
-                alert("请选择要操作的表！");
+                $('#messageShow').modal('show');
+                $('.upMessage').text("请选择要操作的表！");
                 return;
             }
             if (sqlType == "SELECT") {
-                alert("暂不支持select的操作！");
+                $('#messageShow').modal('show');
+                $('.upMessage').text("暂不支持select的操作！");
                 return;
             } else if (sqlType == "INSERT") {
-                alert("暂不支持insert的操作！");
+                $('#messageShow').modal('show');
+                $('.upMessage').text("暂不支持insert的操作！");
                 return;
             } else if (sqlType == "DELETE") {
-                alert("暂不支持delete的操作！");
+                $('#messageShow').modal('show');
+                $('.upMessage').text("暂不支持delete的操作！");
                 return;
             }
             $.ajax({
                 type: "POST",
-                url: "/dbm/confirm",
+                url: '/dbm/confirm',
                 data: {
                     tableName: tableName,
                     sqlType: sqlType
@@ -154,15 +240,22 @@
                         if (sqlType == "UPDATE") {
                             $('.sql-row-set').html('');
                             $('.sql-row-where').html('');
-                            var str = getSqlRow(columnList);
-                            $('.sql-row-set').html(str);
-                            $('.sql-row-where').html(str);
+                            var whereStr = getSqlRow(columnList,false);
+                            var setStr = getSqlRow(columnList,true);
+                            $('.sql-row-set').html(setStr);
+                            $('.sql-row-where').html(whereStr);
                             $(".update-div").show();
-                            $('.execute-div').show();
+                            $('.preview-div').show();
+                            //隐藏其他的模块
+                            $('.execute-div').hide();
+                            $('.pre-result').hide();
+                            $('.result').hide();
+                            $("#execute_btn").removeAttr("disabled");
                         }
 
                     } else {
-                        alert(data.message);
+                        $('#messageShow').modal('show');
+                        $('.upMessage').text(data.message);
                     }
                 },
                 error: function (XMLHttpRequest,
@@ -170,28 +263,152 @@
                     alert("请求错误！");
                 }
             });
+        }
 
-            function getSqlRow(columnList) {
-                var str = "";
+        function getSqlRow(columnList,isSet) {
+            if(isSet){
                 for (var i = 0; i < columnList.length; i++) {
-                    var columnName = columnList[i];
-                    str += `<div class="row">
+                    if(columnList[i] == "id"){
+                        columnList.splice(i,1);
+                    }
+                }
+            }
+            var str = "";
+            for (var i = 0; i < columnList.length; i++) {
+                var columnName = columnList[i];
+                str += `<div class="row">
                         <div class="col-sm-6 control-label"><label> ${columnName} </label></div>
                         <div class="col-sm-6">
                         <input type="text" class="form-control" placeholder="请输入"/>
                         </div>
                         </div>`;
+            }
+            return str;
+        }
+
+        //预览
+        function preview_btn() {
+            var tableName = $("#tableName option:selected").val();
+            var sqlType = $("#sqlType option:selected").val();
+            var setMap = new Map();
+            $('.sql-row-set .row').each(function () {
+                var setKey = $(this).find('label').text().trim(),
+                    setValue = $(this).find('input').val();
+                if (setValue !== '') {
+                    setMap.set(setKey, setValue);
                 }
-                return str;
-            }
+            })
+            var whereMap = new Map();
+            $('.sql-row-where .row').each(function () {
+                var whereKey = $(this).find('label').text().trim(),
+                    whereValue = $(this).find('input').val();
+                if (whereValue !== '') {
+                    whereMap.set(whereKey, whereValue);
+                }
+            })
+            $.ajax({
+                type: "POST",
+                url: '/dbm/sql-pre',
+                data: {
+                    tableName: tableName,
+                    sqlType: sqlType,
+                    setJson: mapTOJson(setMap),
+                    whereJson: mapTOJson(whereMap)
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "200") {
+                        var sql = data.dataMap.sql;
+                        var sqlParam = data.dataMap.sqlParam;
+                        var count = data.dataMap.count;
+                        $('#sql').html(sql);
+                        $('#sql-para').html(sqlParam);
+                        $('#sql-count').html(count);
+                        $('.pre-result').show();
+                        $('.execute-div').show();
+                    } else {
+                        $('#messageShow').modal('show');
+                        $('.upMessage').text(data.message);
+                    }
+                },
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
+                    $('#messageShow').modal('show');
+                    $('.upMessage').text("请求错误！");
+                }
+            });
+        }
+        
+        function execute_dialog() {
+            $('#tips').html($('#sql-count').text());
+            $('#exe_dialog').modal('show');
+        }
 
-            //执行按钮
-            function execute_btn() {
-                $()
+        //执行按钮
+        function execute_btn() {
+            $('#exe_dialog').modal('hide');
+            var tableName = $("#tableName option:selected").val();
+            var sqlType = $("#sqlType option:selected").val();
+            var setMap = new Map();
+            $('.sql-row-set .row').each(function () {
+                var setKey = $(this).find('label').text().trim(),
+                    setValue = $(this).find('input').val();
+                if (setValue !== '') {
+                    setMap.set(setKey, setValue);
+                }
+            })
+            var whereMap = new Map();
+            $('.sql-row-where .row').each(function () {
+                var whereKey = $(this).find('label').text().trim(),
+                    whereValue = $(this).find('input').val();
+                if (whereValue !== '') {
+                    whereMap.set(whereKey, whereValue);
+                }
+            })
+            $.ajax({
+                type: "POST",
+                url: '/dbm/execute-sql',
+                data: {
+                    tableName: tableName,
+                    sqlType: sqlType,
+                    setJson: mapTOJson(setMap),
+                    whereJson: mapTOJson(whereMap)
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "200") {
+                        var sql = data.dataMap.sql;
+                        var result = data.dataMap;
+                        $('#sql-status').html(result);
+                        $('.result').show();
+                        $("#execute_btn").attr("disabled", "disabled");
+                    } else {
+                        $('#messageShow').modal('show');
+                        $('.upMessage').text(data.message);
+                    }
+                },
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
+                    $('#messageShow').modal('show');
+                    $('.upMessage').text("请求错误！");
+                }
+            });
 
+        }
 
-
-            }
+        function mapTOJson(m) {
+            var str = '{';
+            var i = 1;
+            m.forEach(function (item, key, mapObj) {
+                if (mapObj.size == i) {
+                    str += '"' + key + '":"' + item + '"';
+                } else {
+                    str += '"' + key + '":"' + item + '",';
+                }
+                i++;
+            });
+            str += '}';
+            return str;
         }
 
         /*]]>*/

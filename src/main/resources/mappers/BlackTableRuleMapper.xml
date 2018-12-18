@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.guonl.dao.LogsSqlRecordMapper">
-  <resultMap id="BaseResultMap" type="com.guonl.po.LogsSqlRecord">
+<mapper namespace="com.guonl.dao.BlackTableRuleMapper">
+  <resultMap id="BaseResultMap" type="com.guonl.po.BlackTableRule">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
-    <result column="execute_sql" jdbcType="VARCHAR" property="executeSql" />
-    <result column="sql_type" jdbcType="VARCHAR" property="sqlType" />
-    <result column="where_para" jdbcType="VARCHAR" property="wherePara" />
-    <result column="update_para" jdbcType="VARCHAR" property="updatePara" />
-    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="b_table_name" jdbcType="VARCHAR" property="bTableName" />
+    <result column="is_black" jdbcType="INTEGER" property="isBlack" />
+    <result column="black_field" jdbcType="VARCHAR" property="blackField" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="is_del" jdbcType="BIT" property="isDel" />
@@ -72,16 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, table_name, execute_sql, sql_type, where_para, update_para, operator, created_at, 
-    updated_at, is_del
+    id, parent_id, b_table_name, is_black, black_field, created_at, updated_at, is_del
   </sql>
-  <select id="selectByExample" parameterType="com.guonl.po.LogsSqlRecordExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.guonl.po.BlackTableRuleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from logs_sql_record
+    from black_table_rule
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,52 +89,44 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from logs_sql_record
+    from black_table_rule
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from logs_sql_record
+    delete from black_table_rule
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.guonl.po.LogsSqlRecordExample">
-    delete from logs_sql_record
+  <delete id="deleteByExample" parameterType="com.guonl.po.BlackTableRuleExample">
+    delete from black_table_rule
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.guonl.po.LogsSqlRecord">
-    insert into logs_sql_record (id, table_name, execute_sql, 
-      sql_type, where_para, update_para, 
-      operator, created_at, updated_at, 
-      is_del)
-    values (#{id,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, #{executeSql,jdbcType=VARCHAR}, 
-      #{sqlType,jdbcType=VARCHAR}, #{wherePara,jdbcType=VARCHAR}, #{updatePara,jdbcType=VARCHAR}, 
-      #{operator,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
-      #{isDel,jdbcType=BIT})
+  <insert id="insert" parameterType="com.guonl.po.BlackTableRule">
+    insert into black_table_rule (id, parent_id, b_table_name, 
+      is_black, black_field, created_at, 
+      updated_at, is_del)
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{bTableName,jdbcType=VARCHAR}, 
+      #{isBlack,jdbcType=INTEGER}, #{blackField,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{isDel,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.guonl.po.LogsSqlRecord">
-    insert into logs_sql_record
+  <insert id="insertSelective" parameterType="com.guonl.po.BlackTableRule">
+    insert into black_table_rule
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="tableName != null">
-        table_name,
+      <if test="parentId != null">
+        parent_id,
       </if>
-      <if test="executeSql != null">
-        execute_sql,
+      <if test="bTableName != null">
+        b_table_name,
       </if>
-      <if test="sqlType != null">
-        sql_type,
+      <if test="isBlack != null">
+        is_black,
       </if>
-      <if test="wherePara != null">
-        where_para,
-      </if>
-      <if test="updatePara != null">
-        update_para,
-      </if>
-      <if test="operator != null">
-        operator,
+      <if test="blackField != null">
+        black_field,
       </if>
       <if test="createdAt != null">
         created_at,
@@ -153,23 +142,17 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="tableName != null">
-        #{tableName,jdbcType=VARCHAR},
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
       </if>
-      <if test="executeSql != null">
-        #{executeSql,jdbcType=VARCHAR},
+      <if test="bTableName != null">
+        #{bTableName,jdbcType=VARCHAR},
       </if>
-      <if test="sqlType != null">
-        #{sqlType,jdbcType=VARCHAR},
+      <if test="isBlack != null">
+        #{isBlack,jdbcType=INTEGER},
       </if>
-      <if test="wherePara != null">
-        #{wherePara,jdbcType=VARCHAR},
-      </if>
-      <if test="updatePara != null">
-        #{updatePara,jdbcType=VARCHAR},
-      </if>
-      <if test="operator != null">
-        #{operator,jdbcType=VARCHAR},
+      <if test="blackField != null">
+        #{blackField,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         #{createdAt,jdbcType=TIMESTAMP},
@@ -182,35 +165,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.guonl.po.LogsSqlRecordExample" resultType="java.lang.Long">
-    select count(*) from logs_sql_record
+  <select id="countByExample" parameterType="com.guonl.po.BlackTableRuleExample" resultType="java.lang.Long">
+    select count(*) from black_table_rule
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update logs_sql_record
+    update black_table_rule
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.tableName != null">
-        table_name = #{record.tableName,jdbcType=VARCHAR},
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
       </if>
-      <if test="record.executeSql != null">
-        execute_sql = #{record.executeSql,jdbcType=VARCHAR},
+      <if test="record.bTableName != null">
+        b_table_name = #{record.bTableName,jdbcType=VARCHAR},
       </if>
-      <if test="record.sqlType != null">
-        sql_type = #{record.sqlType,jdbcType=VARCHAR},
+      <if test="record.isBlack != null">
+        is_black = #{record.isBlack,jdbcType=INTEGER},
       </if>
-      <if test="record.wherePara != null">
-        where_para = #{record.wherePara,jdbcType=VARCHAR},
-      </if>
-      <if test="record.updatePara != null">
-        update_para = #{record.updatePara,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operator != null">
-        operator = #{record.operator,jdbcType=VARCHAR},
+      <if test="record.blackField != null">
+        black_field = #{record.blackField,jdbcType=VARCHAR},
       </if>
       <if test="record.createdAt != null">
         created_at = #{record.createdAt,jdbcType=TIMESTAMP},
@@ -227,14 +204,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update logs_sql_record
+    update black_table_rule
     set id = #{record.id,jdbcType=INTEGER},
-      table_name = #{record.tableName,jdbcType=VARCHAR},
-      execute_sql = #{record.executeSql,jdbcType=VARCHAR},
-      sql_type = #{record.sqlType,jdbcType=VARCHAR},
-      where_para = #{record.wherePara,jdbcType=VARCHAR},
-      update_para = #{record.updatePara,jdbcType=VARCHAR},
-      operator = #{record.operator,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      b_table_name = #{record.bTableName,jdbcType=VARCHAR},
+      is_black = #{record.isBlack,jdbcType=INTEGER},
+      black_field = #{record.blackField,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
       updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
       is_del = #{record.isDel,jdbcType=BIT}
@@ -242,26 +217,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.guonl.po.LogsSqlRecord">
-    update logs_sql_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.guonl.po.BlackTableRule">
+    update black_table_rule
     <set>
-      <if test="tableName != null">
-        table_name = #{tableName,jdbcType=VARCHAR},
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
       </if>
-      <if test="executeSql != null">
-        execute_sql = #{executeSql,jdbcType=VARCHAR},
+      <if test="bTableName != null">
+        b_table_name = #{bTableName,jdbcType=VARCHAR},
       </if>
-      <if test="sqlType != null">
-        sql_type = #{sqlType,jdbcType=VARCHAR},
+      <if test="isBlack != null">
+        is_black = #{isBlack,jdbcType=INTEGER},
       </if>
-      <if test="wherePara != null">
-        where_para = #{wherePara,jdbcType=VARCHAR},
-      </if>
-      <if test="updatePara != null">
-        update_para = #{updatePara,jdbcType=VARCHAR},
-      </if>
-      <if test="operator != null">
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="blackField != null">
+        black_field = #{blackField,jdbcType=VARCHAR},
       </if>
       <if test="createdAt != null">
         created_at = #{createdAt,jdbcType=TIMESTAMP},
@@ -275,20 +244,18 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.guonl.po.LogsSqlRecord">
-    update logs_sql_record
-    set table_name = #{tableName,jdbcType=VARCHAR},
-      execute_sql = #{executeSql,jdbcType=VARCHAR},
-      sql_type = #{sqlType,jdbcType=VARCHAR},
-      where_para = #{wherePara,jdbcType=VARCHAR},
-      update_para = #{updatePara,jdbcType=VARCHAR},
-      operator = #{operator,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.guonl.po.BlackTableRule">
+    update black_table_rule
+    set parent_id = #{parentId,jdbcType=INTEGER},
+      b_table_name = #{bTableName,jdbcType=VARCHAR},
+      is_black = #{isBlack,jdbcType=INTEGER},
+      black_field = #{blackField,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       is_del = #{isDel,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectOneByExample" parameterType="com.guonl.po.LogsSqlRecordExample" resultMap="BaseResultMap">
+  <select id="selectOneByExample" parameterType="com.guonl.po.BlackTableRuleExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -296,7 +263,7 @@
     -->
     select
     <include refid="Base_Column_List" />
-    from logs_sql_record
+    from black_table_rule
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -311,15 +278,14 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into logs_sql_record
-    (id, table_name, execute_sql, sql_type, where_para, update_para, operator, created_at, 
-      updated_at, is_del)
+    insert into black_table_rule
+    (id, parent_id, b_table_name, is_black, black_field, created_at, updated_at, is_del
+      )
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=INTEGER}, #{item.tableName,jdbcType=VARCHAR}, #{item.executeSql,jdbcType=VARCHAR}, 
-        #{item.sqlType,jdbcType=VARCHAR}, #{item.wherePara,jdbcType=VARCHAR}, #{item.updatePara,jdbcType=VARCHAR}, 
-        #{item.operator,jdbcType=VARCHAR}, #{item.createdAt,jdbcType=TIMESTAMP}, #{item.updatedAt,jdbcType=TIMESTAMP}, 
-        #{item.isDel,jdbcType=BIT})
+      (#{item.id,jdbcType=INTEGER}, #{item.parentId,jdbcType=INTEGER}, #{item.bTableName,jdbcType=VARCHAR}, 
+        #{item.isBlack,jdbcType=INTEGER}, #{item.blackField,jdbcType=VARCHAR}, #{item.createdAt,jdbcType=TIMESTAMP}, 
+        #{item.updatedAt,jdbcType=TIMESTAMP}, #{item.isDel,jdbcType=BIT})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" parameterType="map">
@@ -328,7 +294,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    insert into logs_sql_record (
+    insert into black_table_rule (
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
@@ -340,23 +306,17 @@
         <if test="'id' == column.value">
           #{item.id,jdbcType=INTEGER}
         </if>
-        <if test="'table_name' == column.value">
-          #{item.tableName,jdbcType=VARCHAR}
+        <if test="'parent_id' == column.value">
+          #{item.parentId,jdbcType=INTEGER}
         </if>
-        <if test="'execute_sql' == column.value">
-          #{item.executeSql,jdbcType=VARCHAR}
+        <if test="'b_table_name' == column.value">
+          #{item.bTableName,jdbcType=VARCHAR}
         </if>
-        <if test="'sql_type' == column.value">
-          #{item.sqlType,jdbcType=VARCHAR}
+        <if test="'is_black' == column.value">
+          #{item.isBlack,jdbcType=INTEGER}
         </if>
-        <if test="'where_para' == column.value">
-          #{item.wherePara,jdbcType=VARCHAR}
-        </if>
-        <if test="'update_para' == column.value">
-          #{item.updatePara,jdbcType=VARCHAR}
-        </if>
-        <if test="'operator' == column.value">
-          #{item.operator,jdbcType=VARCHAR}
+        <if test="'black_field' == column.value">
+          #{item.blackField,jdbcType=VARCHAR}
         </if>
         <if test="'created_at' == column.value">
           #{item.createdAt,jdbcType=TIMESTAMP}

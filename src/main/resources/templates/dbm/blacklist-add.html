@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="" xmlns:layout="" layout:decorator="layout/body">
+<body>
+<section layout:fragment="content">
+    <script type="text/javascript">
+        var activeMenu = '/dbm/black-add';
+    </script>
+    <div class="container-fluid">
+        <div class="panel" style="padding-bottom: 40px;">
+            <div class="panel-body">
+                <form id="form-query" th:action="@{/dbm/black-save}"
+                      method="post" th:object="${blackTableRuleVo}"
+                      class="form-horizontal">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <div class="col-sm-5 control-label">
+                                <span class="require_field">*</span> <label
+                                    class="lable_form_title_five">待选择的表</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <select id="tableName" class="selectpicker" data-live-search="true">
+                                    <option th:value="--">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-5 control-label">
+                                <span class="require_field">*</span> <label
+                                    class="lable_form_title_five">是否为黑表</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <select class="selectpicker show-tick form-control color-gray" th:field="*{isBlack}"
+                                        id="blackClick">
+                                    <option th:value="0">不是</option>
+                                    <option th:value="1">是</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="field-div">
+                            <div class="col-sm-5 control-label">
+                                <span class="require_field">*</span> <label
+                                    class="lable_form_title_five">需要屏蔽的表字段</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <select id="fields" class="selectpicker" multiple="multiple" data-live-search="true">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-top: 40px;">
+                            <div class="col-sm-5 col-sm-offset-5 text-center">
+                                <a class="btn btn-primary text-left" href='javascript:void(0)'
+                                   onclick='back()'> 返回</a>&nbsp;
+                                <button class="btn btn-primary saveBtn" type="button">保&emsp;存</button>
+                            </div>
+                        </div>
+                        <input th:field="*{id}" type="hidden" id="id"/>
+                        <input th:field="*{bTableName}" type="hidden" id="bTableName"/>
+                        <input th:field="*{fieldStr}" type="hidden" id="fieldStr"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 默认弹窗 -->
+    <div class="modal fade" id="row-type4" tabindex="-1" role="dialog"
+         aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" style="width: 300px;">
+            <div class="modal-content" style="text-align: center;">
+                <div class="modal-body">
+                    <h4 class="upMessage" style="line-height: 35px;"></h4>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" data-dismiss="modal" id="closeModalBtn"
+                            class="btn btn-primary btn-default">确认
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}"/>
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        $('#defalut').prop('checked', true);
+        //禁用Enter键表单自动提交
+        document.onkeydown = function (event) {
+            var target, code, tag;
+            if (!event) {
+                event = window.event; //针对ie浏览器
+                target = event.srcElement;
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "TEXTAREA") {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            else {
+                target = event.target; //针对遵循w3c标准的浏览器，如Firefox
+                code = event.keyCode;
+                if (code == 13) {
+                    tag = target.tagName;
+                    if (tag == "INPUT") {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            }
+        };
+
+        $(function () {
+            //请求表
+            $.ajax({
+                type: "POST",
+                url: "/dbm/show-black-tables",
+                data: {
+                    flag: 3
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "200") {
+                        var tableList = data.dataMap;
+                        for (var i = 0; i < tableList.length; i++) {
+                            var tableName = tableList[i];
+                            var html = $('<option value="' + tableName + '">' + tableName + '</option>');
+                            $('#tableName').append(html);
+                        }
+                        $('#tableName').selectpicker('refresh');
+                        $('#tableName').selectpicker('show');
+                    } else {
+                        alertMsga(data.message);
+                    }
+                },
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
+                    alertMsga("请求错误！");
+                }
+            });
+        });
+
+        //选择表触发
+        $("select#tableName").change(function () {
+            if ($(this).val() == "--") {
+                return;
+            }
+            var tableName = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "/dbm/get-table-field",
+                data: {
+                    tableName: tableName
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == "200") {
+                        var fieldList = data.dataMap;
+                        for (var i = 0; i < fieldList.length; i++) {
+                            var field = fieldList[i];
+                            var html = $('<option value="' + field + '">' + field + '</option>');
+                            $('#fields').append(html);
+                        }
+                        $('#fields').selectpicker('refresh');
+                        $('#fields').selectpicker('show');
+                    } else {
+                        alertMsga(data.message);
+                    }
+                },
+                error: function (XMLHttpRequest,
+                                 textStatus, errorThrown) {
+                    alertMsga("请求错误！");
+                }
+            });
+
+        });
+
+        //选择黑表触发
+        $("select#blackClick").change(function () {
+            if ($(this).val() == "1") {
+                $('#field-div').hide();
+            } else {
+                $('#field-div').show();
+            }
+        });
+
+        //保存
+        $('.saveBtn').click(function () {
+            var flag = true;
+            $('.saveBtn').attr('disabled', 'disabled');
+            var tableName = $("#tableName option:selected").val();
+            if (tableName == "--") {
+                alertMsga("请选择要操作的表！");
+                $('.saveBtn').removeAttr('disabled');
+                flag = false;
+            }
+            var isBlack = $("#blackClick option:selected").val();
+            if (isBlack == "0") {
+                var fields = $("#fields").val();
+                if(fields == null){
+                    alertMsga("请选择要屏蔽的字段！");
+                    $('.saveBtn').removeAttr('disabled');
+                    flag = false;
+                }
+            }
+            $('#bTableName').val($("#tableName option:selected").val());
+            $("#fieldStr").val($("#fields").val());
+            //表单提交的方法、比如ajax提交
+            if (flag) {
+                $('#form-query')
+                    .ajaxSubmit({
+                        type: 'POST',
+                        dataType: "json",
+                        async: false,
+                        data: $(
+                            '#form-query')
+                            .serialize(),
+                        success: function (data) {
+                            if (data.code == "200") {
+                                window.location.href = '/dbm/black-list';
+                            } else {
+                                alertMsga(data.message);
+                            }
+                        },
+                        error: function (XMLHttpRequest,
+                                         textStatus, errorThrown) {
+                            alertMsga("请求错误！");
+                        }
+                    });
+            }
+
+        })
+
+
+        /*]]>*/
+    </script>
+</section>
+</body>
+</html>

@@ -1,13 +1,12 @@
 package com.guonl.vo;
 
 import com.guonl.util.SqlTypeEnum;
-
 import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by guonl
- * Date 2018/12/4 10:01 AM
+ * Date 2018/12/10 2:03 PM
  * Description:
  */
 public class SqlQueryVO implements Serializable{
@@ -46,7 +45,6 @@ public class SqlQueryVO implements Serializable{
      * 操作人
      */
     private String operator;
-
 
     public String getTableName() {
         return tableName;

@@ -6,10 +6,10 @@ import java.io.Serializable;
 
 /**
  * Created by guonl
- * Date 2018/12/5 11:18 AM
+ * Date 2018/12/10 2:16 PM
  * Description:
  */
-public class SqlExecuteVO implements Serializable{
+public class SqlExecuteVO implements Serializable {
 
     /**
      * 操作的表名
@@ -24,12 +24,12 @@ public class SqlExecuteVO implements Serializable{
     /**
      * 设置参数
      */
-    private String setParaStr;
+    private String setJson;
 
     /**
      * 条件参数
      */
-    private String whereParaStr;
+    private String whereJson;
 
     public String getTableName() {
         return tableName;
@@ -47,19 +47,19 @@ public class SqlExecuteVO implements Serializable{
         this.sqlType = sqlType;
     }
 
-    public String getSetParaStr() {
-        return setParaStr;
+    public String getSetJson() {
+        return setJson;
     }
 
-    public void setSetParaStr(String setParaStr) {
-        this.setParaStr = setParaStr;
+    public void setSetJson(String setJson) {
+        this.setJson = setJson;
     }
 
-    public String getWhereParaStr() {
-        return whereParaStr;
+    public String getWhereJson() {
+        return whereJson;
     }
 
-    public void setWhereParaStr(String whereParaStr) {
-        this.whereParaStr = whereParaStr;
+    public void setWhereJson(String whereJson) {
+        this.whereJson = whereJson;
     }
 }

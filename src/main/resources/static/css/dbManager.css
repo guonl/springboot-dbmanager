@@ -1,7 +1,36 @@
+/* 更新 */
 .update-div {
     display: none;
 }
 
+/* 查询 */
+.select-div {
+    display: none;
+}
+
+/* 新增 */
+.insert-div {
+    display: none;
+}
+
+/* 删除 */
+.delete-div {
+    display: none;
+}
+
+/*预览*/
+.preview-div {
+    display: none;
+    position: absolute;
+    right: 100px;
+    bottom: 0;
+}
+
+.pre-result {
+    display: none;
+}
+
+/*执行*/
 .execute-div {
     display: none;
     position: absolute;
@@ -13,20 +42,37 @@
     display: none;
 }
 
+.execute-result > label {
+    margin-left: 30px;
+    font-size: medium;
+    font-weight: bolder;
+    color: #454698;
+}
+
+.execute-result > span {
+    margin-left: 30px;
+    font-size: medium;
+    font-weight: bolder;
+    color: #B72D54;
+}
+
 .sql-h1 {
     height: 40px;
     width: 100%;
     line-height: 40px;
     font-weight: bolder;
-    font-size: medium;
-    color: red;
+    font-size: x-large;
+    color: #B72D54;
+    font-family: "Microsoft Yahei", "微软雅黑";
 }
 
 .sql-h2 {
     width: 50%;
     height: 40px;
     font-weight: bolder;
-    color: #0c199c;
+    color: #454698;
+    font-family: "Microsoft Yahei", "微软雅黑";
+    font-size: medium;
 }
 
 .sql-title {
@@ -34,11 +80,34 @@
     line-height: 40px;
 }
 
-.execute-result > div {
-    margin-left: 30px;
-    font-size: larger;
-    font-weight: bolder;
-    color: red;
+/**********************/
+
+.left {
+    float: left;
+    width: 20%;
+    /*height: 50px;*/
+    margin-top: 0px;
 }
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    height: 50px;
+}
+
+.right {
+    float: right;
+    width: 25%;
+    height: 50px;
+    margin-top: 0px;
+}
+
+.tableListName {
+    font-size: medium;
+    color: #444795;
+}
+
+
 
 

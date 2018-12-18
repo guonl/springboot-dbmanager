@@ -48,6 +48,7 @@
         </javaClientGenerator>
         <!-- 表转代码：tableName：修改表名 -->
         <table tableName="users"></table>
-        <!--<table tableName="logs_sql_record"></table>-->
+        <table tableName="black_table_rule"></table>
+        <table tableName="sql_log_record"></table>
     </context>
 </generatorConfiguration>

@@ -1,64 +1,183 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorator="layout/body">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-</head>
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:guonl="" layout:decorator="layout/body">
+
 <body>
-<section layout:fragment="content">
-    <div class="container-fluid">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title searchCondition">选择条件</h3>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-5 stepWord">
-                        <span>请选择要操作的表</span>
-                        <select id="tableName" class="selectpicker color-gray form_search_height"
-                                data-live-search="true">
-                            <option th:value="--">请选择</option>
-                        </select>
-                    </div>
+	<section layout:fragment="content">
+		<script type="text/javascript">
+			var activeMenu = '/dbm/black-list';
+		</script>
+		<div class="container-fluid">
+			<form id="form-query" th:action="@{/dbm/black-list}"
+				method="post" th:object="${blackTableRuleVo}">
+				<div class="col-sm-12">
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title searchCondition">查询条件</h3>
+							<a id="rightBtn" class="btn btn-primary "
+								th:href="@{/dbm/black-add}"><span
+								class="glyphicon glyphicon-plus"></span>新建</a>
+						</div>
 
-                    <div class="col-sm-4 stepWord">
-                        <span>选择操作类型</span>
-                        <select id="sqlType" class="form_search_height color-gray">
-                            <option th:value="SELECT">查询</option>
-                            <option th:value="UPDATE">更新</option>
-                            <option th:value="INSERT">插入</option>
-                            <option th:value="DELETE">删除</option>
-                        </select>
-                    </div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-3 stepWord">
+									<span>表名</span> <input type="text" th:field="*{bTableName}"
+										class="form-control form_search_height color-gray"
+										style="display: inline-block;" />
+								</div>
 
-                    <button class="btn btn-primary form_search_height btn2"
-                            type="button" onclick="confirm_type()">确定
-                    </button>
-                </div>
-            </div>
+                                <div class="col-sm-3 stepWord">
+                                    <span>是否黑名单</span> <select th:field="*{isBlack}"
+                                                            class="form_search_height color-gray">
+                                    <option value="">全部</option>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                                </div>
 
-            <div class="panel-heading">
-                <h3 class="panel-title searchCondition">操作字段</h3>
-            </div>
+								<div class="col-sm-2 ">
+									<button class="btn btn-primary form_search_height"
+										type="submit" id="btn-submit">搜索</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-        </div>
-    </div>
-    <link rel="stylesheet" th:href="@{/css/bootstrap-select.min.css}"/>
-    <script th:src="@{/js/bootstrap-select.min.js}"></script>
-    <script th:src="@{/js/select2.js}"></script>
-    <script src="https://cdn.bootcss.com/select2/4.0.6-rc.1/js/i18n/zh-CN.js"></script>
-    <script th:inline="javascript">
+				<div class="col-sm-12 col-md-12 col-lg-12">
+					<div class="panel">
+						<div class="panel-body">
+							<label> 共计 <span th:text="*{rct}"></span>&nbsp;条，每页显示 <span
+								th:text="*{ps}"></span>，当前显示为第 <span th:text="*{pn}"></span>&nbsp;页
+							</label>
+							<div class="row">
+								<div class="col-sm-12 table-responsive">
+									<table class="table table-striped table-bordered">
+										<thead>
+											<tr role="row">
+												<th class="min-desktop">序号</th>
+												<th class="min-desktop">表名称</th>
+												<th class="min-desktop">是否是黑表</th>
+												<th class="min-desktop">黑字段列表</th>
+												<th class="min-desktop">创建时间</th>
+												<th class="min-desktop">操作</th>
+											</tr>
+										</thead>
+										<tbody th:if="${ not #lists.isEmpty(blacklist)}">
+											<tr th:each="vo,status:${blacklist}" class="checkList">
+												<td th:text="${status.count}" style="min-width: 5rem"></td>
+												<td th:text="${vo.bTableName}" style="min-width: 6rem"></td>
+												<td>
+													<span th:if="${vo.isBlack == 0}" th:text="否" style="min-width: 6rem"></span>
+													<span th:if="${vo.isBlack != 0}" th:text="是" style="min-width: 6rem"></span>
+												</td>
+                                                <td th:text="${vo.fieldList}" style="min-width: 6rem"></td>
+												<td th:text="${vo.createdAt == null}?'':${#calendars.format(vo.createdAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+												<td>
+													<!--<a class="a_common"-->
+													   <!--th:href="@{/dbm/black-modify-page(id=${vo.id})}">修改</a>-->
+                                                    <a class="a_common" th:attr="id=${vo.id}" onclick="del_confirm(this)">删除</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<guonl:page />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 
-        /*<![CDATA[*/
-        $(function () {
 
-        });
+		<!-- 提示弹框 -->
+		<div class="modal fade" id="messageShow" tabindex="-1" role="dialog"
+			aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" style="width: 300px;">
+				<div class="modal-content" style="text-align: center;">
+					<div class="modal-body">
+						<h4 class="upMessage"></h4>
+					</div>
+					<div class="modal-footer" style="text-align: center;">
+						<button type="button" data-dismiss="modal" id="closeModalBtn"
+							class="btn btn-primary btn-default">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="modal fade" id="dialog" tabindex="-1" role="dialog"
+				 aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog" style="width: 300px;">
+					<div class="modal-content" style="text-align: center;">
+						<div class="modal-body">
+							<h4>是否确认删除？</h4>
+							<input type="hidden" id="txtId" value=""/>
+						</div>
+						<div class="modal-footer" style="text-align: center;">
+							<button type="button" class="btn btn-default"
+									data-dismiss="modal">返回
+							</button>
+							<button type="button" class="btn btn-primary"
+									onclick="del_black()">确认
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
+		<script th:inline="javascript">
+			/*<![CDATA[*/
 
-        /*]]>*/
-    </script>
-</section>
+			$(function() {
+
+			});
+
+            function del_confirm(obj) {
+                var id = $(obj).attr("id");
+                $("#txtId").val(id);
+                $('#dialog').modal('show');
+            }
+
+            function del_black() {
+                var id = $("#txtId").val();
+                $('#dialog').modal('hide');
+                $.ajax({
+                    url: '/dbm/del-black',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        id: id
+                    },
+                    cache: false,
+                    success: function (data) {
+                        if (data.code == 200) {
+                            window.location.href = '/dbm/black-list';
+                        }
+                        else {
+                            $('#dialog').modal('hide');
+                            $('#messageShow').modal('show');
+                            $('.upMessage').text(data.message);
+                        }
+                    },
+                    error: function (data) {
+                        $('#dialog').modal('hide');
+                        $('#messageShow').modal('show');
+                        $('.upMessage').text("请求错误！");
+                    }
+                })
+
+            }
+
+			/*]]>*/
+		</script>
+	</section>
 </body>
+
 </html>

@@ -3,7 +3,7 @@
 -- 创建数据库
 # CREATE DATABASE dbmanager;
 # use dbmanager;
-
+-- 创建用户表
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -22,20 +22,44 @@ CREATE TABLE `users` (
   KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
-
-DROP TABLE IF EXISTS `logs_sql_record`;
-CREATE TABLE `logs_sql_record` (
+-- 黑名单表
+DROP TABLE IF EXISTS `black_table_rule`;
+CREATE TABLE `black_table_rule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `table_name` varchar(30) NOT NULL COMMENT '操作的表名',
-  `execute_sql` varchar(255) DEFAULT NULL COMMENT '被执行的sql',
-  `sql_type` varchar(50) DEFAULT NULL COMMENT 'sql类型：update insert select delete ...',
-  `where_para` varchar(255) DEFAULT NULL COMMENT '查询参数',
-  `update_para` varchar(255) DEFAULT NULL COMMENT '更新参数',
-  `operator` varchar(50) DEFAULT NULL COMMENT '操作人',
+  `parent_id` int(11) DEFAULT '0' COMMENT '夫级ID，0是表级别',
+  `b_table_name` varchar(50) NOT NULL COMMENT '黑名单表名',
+  `is_black` int(1) DEFAULT '0' COMMENT '是否是黑名单 0不是 1是',
+  `black_field` varchar(50) DEFAULT NULL COMMENT '黑字段',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间 ',
   `is_del` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='sql操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='黑名单表规则';
+
+-- sql记录表
+DROP TABLE IF EXISTS `sql_log_record`;
+CREATE TABLE `sql_log_record` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(50) NOT NULL COMMENT '操作的表名',
+  `execute_sql` varchar(500) DEFAULT NULL COMMENT '被执行的sql',
+  `sql_para` varchar(500) DEFAULT NULL COMMENT '执行参数',
+  `sql_type` varchar(20) DEFAULT NULL COMMENT 'sql类型：update insert select delete ...',
+  `operator_ip` varchar(30) DEFAULT NULL COMMENT '操作者IP',
+  `operator_info` varchar(200) DEFAULT NULL COMMENT '操作人详情',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间 ',
+  `is_del` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='sql操作日志表';
+
+
+
+
+
+
+
+
+
+
 
 
